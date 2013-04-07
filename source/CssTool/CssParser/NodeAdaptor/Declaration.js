@@ -22,7 +22,7 @@ define(
 				this.processValue(value);
 			}, this);
 
-			console.log(this.node);
+			return this.node;
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processValue = function(value) {

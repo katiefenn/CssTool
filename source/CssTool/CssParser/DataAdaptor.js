@@ -41,7 +41,7 @@ define(
 
 		CssParserDataAdaptor.prototype.processDeclaration = function(data) {
 			var declarationAdaptor = new CssParserNodeAdaptorDeclaration();
-			declarationAdaptor.process(data);
+			this.catalogItems.push(declarationAdaptor.process(data));
 		};
 
 		CssParserDataAdaptor.prototype.processSelector = function(data) {
