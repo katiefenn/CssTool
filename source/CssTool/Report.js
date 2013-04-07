@@ -11,14 +11,15 @@ define(
 		}
 
 		Report.prototype.run = function() {
-			for(catalogItemIndex in this.catalog) {
-				var metricIterator = Iterator(this.metrics.selector);
-				if(this.catalog[catalogItemIndex].type == 'selector') {
-					for(metric in metricIterator) {
-						jQuery.extend(this.results, metric[1].measure(this.catalog[catalogItemIndex]));
+			this.catalog.forEach(function(catalogItem) {
+				if(catalogItem.type == 'selector') {
+					for(metric in this.metrics.selector) {
+						if(this.metrics.selector.hasOwnProperty(metric)) {
+							jQuery.extend(this.results, this.metrics.selector[metric].measure(catalogItem));
+						}
 					}
 				}
-			}
+			}, this);
 
 			return this.results;
 		};
