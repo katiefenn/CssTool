@@ -50,31 +50,31 @@ define(
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processHash = function(value) {
-			return {'value': value.value, 'string': '#' + value.value, 'type-group': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
+			return {'value': value.value, 'string': '#' + value.value, 'typeGroup': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processPercentage = function(value) {
-			return {'value': value.value, 'string': value.value + '%', 'type-group': 'numeric', 'type': 'percentage'};
+			return {'value': value.value, 'string': value.value + '%', 'typeGroup': 'numeric', 'type': 'percentage'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processPixel = function(value) {
-			return {'value': value.num, 'string': value.num + 'px', 'type-group': 'length', 'type': 'pixels'};
+			return {'value': value.num, 'string': value.num + 'px', 'typeGroup': 'length', 'type': 'pixels'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processUrl = function(value) {
-			return {'value': value.value, 'string': 'url(' + value.value + ')', 'type-group': 'textual', 'type': 'url'};
+			return {'value': value.value, 'string': 'url(' + value.value + ')', 'typeGroup': 'textual', 'type': 'url'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processKeyword = function(value) {
-			return {'value': value.value, 'string': value.value, 'type-group': 'textual', 'type': 'keyword'};
+			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'keyword'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processNumber = function(value) {
-			return {'value': value.value, 'string': value.value, 'type-group': 'numeric', 'type': 'number'};
+			return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'};
 		};
 
 		CssParserNodeAdaptorDeclaration.prototype.processString = function(value) {
-			return {'value': value.value, 'string': value.value, 'type-group': 'textual', 'type': 'string'};
+			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'string'};
 		};
 
 		return CssParserNodeAdaptorDeclaration;
