@@ -15,6 +15,9 @@ define(
 				if(catalogItem.type == 'selector') {
 					this.runMetricsOnCatalogItem(catalogItem, this.metrics.selector);
 				}
+				else if(catalogItem.type == 'declaration') {
+					this.runMetricsOnCatalogItem(catalogItem, this.metrics.declaration);
+				}
 			}, this);
 
 			return this.results;

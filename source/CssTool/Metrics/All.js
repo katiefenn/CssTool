@@ -1,10 +1,11 @@
 define(
 	'CssTool/Metrics/All',
-	['CssTool/Metrics/Selector'],
+	['CssTool/Metrics/Selector', 'CssTool/Metrics/Declaration'],
 
-	function(selectorMetrics) {
+	function(selectorMetrics, declarationMetrics) {
 		return {
-			selector: selectorMetrics
+			selector: selectorMetrics,
+			declaration: declarationMetrics
 		}
 	}
 );
