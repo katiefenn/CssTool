@@ -1,8 +1,8 @@
 define(
 	'CssTool/CssParser/DataAdaptor',
-	['./NodeAdaptor/Selector'],
+	['./NodeAdaptor/Selector', './NodeAdaptor/Declaration'],
 
-	function (CssParserNodeAdaptorSelector) {
+	function (CssParserNodeAdaptorSelector, CssParserNodeAdaptorDeclaration) {
 
 		function CssParserDataAdaptor() {
 			this.catalogItems = [];
@@ -40,11 +40,8 @@ define(
 		};
 
 		CssParserDataAdaptor.prototype.processDeclaration = function(data) {
-			var item = {
-				'type': 'declaration',
-				'string': data.toString()
-			};
-			//this.catalogItems.push(item);
+			var declarationAdaptor = new CssParserNodeAdaptorDeclaration();
+			declarationAdaptor.process(data);
 		};
 
 		CssParserDataAdaptor.prototype.processSelector = function(data) {
