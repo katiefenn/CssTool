@@ -10,10 +10,12 @@ define(
 
 		CssParserDataAdaptor.prototype.process = function(cssString) {
 			var tokens = tokenize(cssString),
-				data = parse(tokens),
-				rules = Iterator(data.value);
-			for (rule in rules) {
-				this.processRule(rule[1]);
+				data = parse(tokens);
+
+			for (rule in data.value) {
+				if (data.value.hasOwnProperty(rule)) {
+					this.processRule(data.value[rule]);
+				}
 			}
 
 			return this.catalogItems;
@@ -21,9 +23,11 @@ define(
 
 		CssParserDataAdaptor.prototype.processRule = function(data) {
 			if (Object.prototype.toString.call(data.value) == '[object Array]') {
-				var properties = Iterator(data.value);
-				for (property in properties) {
-					this.processDeclaration(property[1]);
+
+				for (property in data.value) {
+					if (data.value.hasOwnProperty(property)) {
+						this.processDeclaration(data.value[property]);
+					}
 				}
 			}
 
