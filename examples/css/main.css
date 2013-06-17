@@ -1,300 +1,222 @@
-/*
- * HTML5 Boilerplate
- *
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
-
-html,
-button,
-input,
-select,
-textarea {
-    color: #222;
+#sky {
+    background: none repeat scroll 0 0 #AACCFF;
+    bottom: 0;
+    height: 800px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
-
-body {
-    font-size: 1em;
-    line-height: 1.4;
+#land {
+    background: url("images/ground.png") repeat-x scroll left center transparent;
+    bottom: 0;
+    height: 70px;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 7;
 }
-
-/*
- * Remove text-shadow in selection highlight: h5bp.com/i
- * These selection declarations have to be separate.
- * Customize the background color to match your design.
- */
-
-::-moz-selection {
-    background: #b3d4fc;
-    text-shadow: none;
+#exhaust {
+    background: url("images/exhaust.png") repeat scroll 0 0 transparent;
+    bottom: -65px;
+    height: 1920px;
+    left: -30px;
+    position: fixed;
+    width: 300px;
+    z-index: 2;
 }
-
-::selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-/*
- * A better looking default horizontal rule
- */
-
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
-/*
- * Remove the gap between images and the bottom of their containers: h5bp.com/i/440
- */
-
-img {
-    vertical-align: middle;
-}
-
-/*
- * Remove default fieldset styles.
- */
-
-fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-/*
- * Allow only vertical resizing of textareas.
- */
-
-textarea {
-    resize: vertical;
-}
-
-/* ==========================================================================
-   Chrome Frame prompt
-   ========================================================================== */
-
-.chromeframe {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
-
-/*
- * Image replacement
- */
-
-.ir {
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-    /* IE 6/7 fallback */
-    *text-indent: -9999px;
-}
-
-.ir:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 150%;
-}
-
-/*
- * Hide from both screenreaders and browsers: h5bp.com/u
- */
-
-.hidden {
-    display: none !important;
-    visibility: hidden;
-}
-
-/*
- * Hide only visually, but have it available for screenreaders: h5bp.com/v
- */
-
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
+#mask {
+    background: none repeat scroll 0 0 #AACCFF;
+    bottom: 60px;
+    height: 1920px;
+    left: -30px;
     position: absolute;
-    width: 1px;
+    width: 300px;
+    z-index: 3;
 }
-
-/*
- * Extends the .visuallyhidden class to allow the element to be focusable
- * when navigated to via the keyboard: h5bp.com/p
- */
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
+#shuttle {
+    background: url("images/shuttle.png") repeat scroll 0 0 transparent;
+    bottom: 40px;
+    height: 150px;
+    left: 45px;
+    position: absolute;
+    width: 120px;
+    z-index: 6;
+}
+#vapour {
+    background: url("images/vapour.png") repeat scroll 0 0 transparent;
+    bottom: -398px;
+    height: 500px;
+    left: -43px;
+    position: absolute;
+    width: 300px;
+    z-index: 5;
+}
+#cloud {
+    background: url("images/cloud.png") no-repeat scroll left center transparent;
+    bottom: 20px;
+    height: 315px;
+    position: fixed;
+    right: 0;
+    width: 978px;
+    z-index: 4;
+}
+#sky-gradient {
+    background: url("images/skygradient.png") repeat-x scroll center top transparent;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 3;
+}
+html {
+    min-width: 1000px;
+}
+body {
+    background: none repeat scroll 0 0 #AACCFF;
+    color: #333333;
+    font-family: Verdana,Arial,Sans-Serif;
+    font-size: 62.5%;
     margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
+    min-width: 1000px;
+    text-align: center;
+    z-index: 0;
 }
-
-/*
- * Hide visually and from screenreaders, but maintain layout
- */
-
-.invisible {
-    visibility: hidden;
+#page {
+    position: absolute;
+    right: 0;
+    text-align: left;
+    width: 850px;
+    z-index: 7;
 }
-
-/*
- * Clearfix: contain floats
- *
- * For modern browsers
- * 1. The space content is one way to avoid an Opera bug when the
- *    `contenteditable` attribute is included anywhere else in the document.
- *    Otherwise it causes space to appear at the top and bottom of elements
- *    that receive the `clearfix` class.
- * 2. The use of `table` rather than `block` is only necessary if using
- *    `:before` to contain the top-margins of child elements.
- */
-
-.clearfix:before,
-.clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
+.post {
+    background: none repeat scroll 0 0 #EEEEFF;
+    border: 1px solid #88AADD;
+    margin-bottom: 20px;
+    opacity: 0.6;
+    padding: 10px;
 }
-
-.clearfix:after {
-    clear: both;
+.post p {
+    letter-spacing: 0.003em;
+    line-height: 20px;
 }
-
-/*
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-
-.clearfix {
-    *zoom: 1;
+#sidebar {
+    margin-left: 620px;
+    padding: 10px;
+    position: fixed;
+    top: 120px;
+    width: 190px;
+    z-index: 8;
 }
-
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   Theses examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
+#sidebar h2 {
+    color: #336699;
+    font-size: 1.3em;
 }
-
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
+#sidebar ul {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 5px;
 }
-
-/* ==========================================================================
-   Print styles.
-   Inlined to avoid required HTTP connection: h5bp.com/r
-   ========================================================================== */
-
-@media print {
-    * {
-        background: transparent !important;
-        color: #000 !important; /* Black prints faster: h5bp.com/s */
-        box-shadow: none !important;
-        text-shadow: none !important;
-    }
-
-    a,
-    a:visited {
-        text-decoration: underline;
-    }
-
-    a[href]:after {
-        content: " (" attr(href) ")";
-    }
-
-    abbr[title]:after {
-        content: " (" attr(title) ")";
-    }
-
-    /*
-     * Don't show links for images, or javascript/internal links
-     */
-
-    .ir a:after,
-    a[href^="javascript:"]:after,
-    a[href^="#"]:after {
-        content: "";
-    }
-
-    pre,
-    blockquote {
-        border: 1px solid #999;
-        page-break-inside: avoid;
-    }
-
-    thead {
-        display: table-header-group; /* h5bp.com/t */
-    }
-
-    tr,
-    img {
-        page-break-inside: avoid;
-    }
-
-    img {
-        max-width: 100% !important;
-    }
-
-    @page {
-        margin: 0.5cm;
-    }
-
-    p,
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
-    }
-
-    h2,
-    h3 {
-        page-break-after: avoid;
-    }
+#sidebar ul li ul li a {
+    color: #114477;
+    font-size: 1.2em;
+}
+#sidebar ul li ul li a:hover {
+    color: #EE9966;
+    font-size: 1.2em;
+}
+#header {
+    background: none repeat scroll 0 0 transparent;
+    z-index: 8;
+}
+#headerimg {
+    background: url("images/headingbg2.png") repeat scroll 0 0 transparent;
+    height: 60px;
+    left: 50px;
+    position: fixed;
+    top: 0;
+    width: 350px;
+    z-index: 9;
+}
+#header .description {
+    display: none;
+}
+#content {
+    font-size: 1.2em;
+    margin-bottom: 150px;
+    position: relative;
+    top: 80px;
+    width: 600px;
+    z-index: 7;
+}
+h1, h2, h3 {
+    font-family: 'Gill Sans','Lucida Grande',Verdana,Arial,Sans-Serif;
+    font-weight: normal;
+    margin: 5px 5px 5px 0;
+}
+h1 {
+    overflow: hidden;
+    text-indent: -800px;
+}
+h2 {
+    font-size: 3em;
+}
+h3 {
+    font-size: 2em;
+}
+h2 a {
+    color: #5588BB;
+}
+a {
+    color: #0066CC;
+    text-decoration: none;
+}
+a:hover {
+    color: #EE9966;
+    text-decoration: underline;
+}
+#searchform {
+    bottom: -5px;
+    display: none;
+    left: 24px;
+    margin: 10px auto;
+    padding: 5px;
+    position: fixed;
+    text-align: center;
+    z-index: 10;
+}
+#searchform #s {
+    background: none repeat scroll 0 0 #66CC77;
+    border: 0 solid #FFFFFF;
+    color: #006611;
+    font-size: 1.5em;
+    padding: 5px;
+    width: 152px;
+}
+#searchform #searchsubmit {
+    padding: 1px;
+    z-index: 10;
+}
+#searchform label {
+    display: none;
+}
+#post-2 {
+    font-size: 1.5em;
+}
+#post-2 ul li {
+    position: relative;
+}
+#post-2 ul ul {
+    display: none;
+    padding: 10px;
+}
+#post-2 ul li:hover ul {
+    background-color: #CCCCFF;
+    border: 1px solid #88AADD;
+    display: block;
+    left: 45%;
+    list-style-type: none;
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    width: 50%;
 }
