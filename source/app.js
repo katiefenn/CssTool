@@ -36,7 +36,7 @@ requirejs(['CssTool','CssTool/Metrics/All','jquery'],
 javascript: (function () {   
     var jsCode = document.createElement('script');   
     jsCode.setAttribute('src', 'http://localhost/~kas/CssTool/source/libs/require.js/require.js');
-    jsCode.setAttribute('data-main', 'http://localhost/~kas/CssTool/source/build/app.js');
+    jsCode.setAttribute('data-main', 'http://localhost/~kas/CssTool/build/app.js');
   document.body.appendChild(jsCode);   
  }());
  */
