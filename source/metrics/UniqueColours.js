@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/UniqueColours',
+	'metrics/UniqueColours',
 	[],
 
 	function() {

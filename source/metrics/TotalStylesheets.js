@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/TotalStylesheets',
+	'metrics/TotalStylesheets',
 	[],
 
 	function() {

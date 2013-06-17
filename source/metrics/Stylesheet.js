@@ -1,7 +1,7 @@
 define(
-	'CssTool/Metrics/Stylesheet',
+	'metrics/Stylesheet',
 	[
-		'CssTool/Metrics/TotalStylesheets',
+		'metrics/TotalStylesheets',
 	],
 	function(
 		TotalStylesheets

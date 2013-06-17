@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/TotalSelectors',
+	'metrics/TotalSelectors',
 	[],
 
 	function() {

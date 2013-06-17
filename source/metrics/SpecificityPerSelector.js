@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/SpecificityPerSelector',
+	'metrics/SpecificityPerSelector',
 	[],
 
 	function() {

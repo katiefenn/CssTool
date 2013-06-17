@@ -1,7 +1,7 @@
 define(
-	'CssTool/Metrics/Declaration',
+	'metrics/Declaration',
 	[
-		'CssTool/Metrics/TotalUniqueColours', 'CssTool/Metrics/UniqueColours'
+		'metrics/TotalUniqueColours', 'metrics/UniqueColours'
 	],
 	function(
 		TotalUniqueColours, UniqueColours

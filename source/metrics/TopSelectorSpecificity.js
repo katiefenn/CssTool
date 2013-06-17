@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/TopSelectorSpecificity',
+	'metrics/TopSelectorSpecificity',
 	[],
 
 	function () {

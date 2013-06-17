@@ -1,23 +1,24 @@
 define(
-	'CssTool/Metrics/UniqueColours',
+	'metrics/TotalUniqueColours',
 	[],
 
 	function() {
-		function UniqueColours() {
+		function TotalUniqueColours() {
 			this.uniqueColours = [];
 		}
 
-		UniqueColours.prototype.measure = function(selectorData) {
+		TotalUniqueColours.prototype.measure = function(selectorData) {
 			selectorData.values.forEach(function(value) {
 				if(value.typeGroup == 'color') {
 					var hash = getLongHashForm(value.value.toLowerCase());
+
 					if(this.uniqueColours.indexOf(hash) === -1) {
 						this.uniqueColours.push(hash);
 					}
 				}
 			}, this);
 			return {
-				'unique-colours': this.uniqueColours.sort()
+				'total-unique-colours': this.uniqueColours.length
 			};
 		};
 
@@ -33,6 +34,6 @@ define(
 			return string;
 		}
 
-		return UniqueColours;
+		return TotalUniqueColours;
 	}
 );

@@ -1,5 +1,5 @@
 define(
-	'CssTool/Metrics/SelectorsPerRule',
+	'metrics/SelectorsPerRule',
 	[],
 
 	function () {

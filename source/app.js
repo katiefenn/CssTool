@@ -8,7 +8,7 @@ require.config({
 	}
 });
 
-requirejs(['CssTool','CssTool/Metrics/All','jquery'],
+requirejs(['CssTool','metrics/All','jquery'],
 	function (CssTool, metrics) {
 		var stylesheets = jQuery("link[rel='stylesheet']")
 			stylesheetData = [];

@@ -1,10 +1,10 @@
 define(
-	'CssTool/Metrics/Selector',
+	'metrics/Selector',
 	[
-		'CssTool/Metrics/IdentifiersPerSelector', 'CssTool/Metrics/TotalSelectors',
-		'CssTool/Metrics/TotalIdentifiers', 'CssTool/Metrics/SelectorsPerRule',
-		'CssTool/Metrics/SpecificityPerSelector', 'CssTool/Metrics/TopSelectorSpecificity',
-		'CssTool/Metrics/TopSelectorSpecificitySelector'
+		'metrics/IdentifiersPerSelector', 'metrics/TotalSelectors',
+		'metrics/TotalIdentifiers', 'metrics/SelectorsPerRule',
+		'metrics/SpecificityPerSelector', 'metrics/TopSelectorSpecificity',
+		'metrics/TopSelectorSpecificitySelector'
 
 	],
 	function(

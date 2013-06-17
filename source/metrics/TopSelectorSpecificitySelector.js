@@ -1,19 +1,22 @@
 define(
-	'CssTool/Metrics/TopSelectorSpecificity',
+	'metrics/TopSelectorSpecificitySelector',
 	[],
 
 	function () {
-		function TopSelectorSpecificity() {
+		function TopSelectorSpecificitySelector() {
 			this.topSelectorSpecificity = 0;
+			this.topSelectorSpecificitySelector = "";
 		}
 
-		TopSelectorSpecificity.prototype.measure = function(selectorData) {
+		TopSelectorSpecificitySelector.prototype.measure = function(selectorData) {
 			for(selectorIndex in selectorData.selectors) {
 				var selector = selectorData.selectors[selectorIndex],
-					specificity = 0;
+					specificity = 0,
+					selectorString = "";
 
 				for(identifierIndex in selector) {
 					if(selector.hasOwnProperty(identifierIndex)) {
+						selectorString += selector[identifierIndex];
 						var identifier = selector[identifierIndex],
 							idIdentifiers = this.countIdIdentifiers(identifier),
 							classIdentifiers = this.countClassIdentifiers(identifier),
@@ -21,7 +24,7 @@ define(
 							pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
 							typeIdentifiers = this.countTypeIdentifiers(identifier),
 							pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
-
+							
 						specificity += Number(
 							String(idIdentifiers) + 
 							String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
@@ -31,16 +34,17 @@ define(
 
 				if(specificity > this.topSelectorSpecificity) {
 					this.topSelectorSpecificity = specificity;
+					this.topSelectorSpecificitySelector = selectorString;
 				}
 			}
 
 
 			return {
-				'top-selector-specificity': this.topSelectorSpecificity
+				'top-selector-specificity-selector': this.topSelectorSpecificitySelector
 			};
 		};		
 
-		TopSelectorSpecificity.prototype.countIdIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countIdIdentifiers = function(identifier) {
 			var regex = /#/;
 
 			if (matches = regex.exec(identifier)) {
@@ -50,7 +54,7 @@ define(
 			return 0;
 		};
 
-		TopSelectorSpecificity.prototype.countClassIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countClassIdentifiers = function(identifier) {
 			var regex = /\./;
 
 			if (matches = regex.exec(identifier)) {
@@ -60,7 +64,7 @@ define(
 			return 0;
 		};
 
-		TopSelectorSpecificity.prototype.countAttributeIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countAttributeIdentifiers = function(identifier) {
 			var regex = /\[/;
 
 			if (matches = regex.exec(identifier)) {
@@ -70,7 +74,7 @@ define(
 			return 0;
 		};
 
-		TopSelectorSpecificity.prototype.countPseudoClassIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countPseudoClassIdentifiers = function(identifier) {
 			var regex = /:[^:]/;
 
 			if (matches = regex.exec(identifier)) {
@@ -80,7 +84,7 @@ define(
 			return 0;
 		};
 
-		TopSelectorSpecificity.prototype.countTypeIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countTypeIdentifiers = function(identifier) {
 			var regex = /^[a-zA-Z_]/;
 
 			if (regex.exec(identifier)) {
@@ -90,7 +94,7 @@ define(
 			return 0;
 		};
 
-		TopSelectorSpecificity.prototype.countPseudoElementIdentifiers = function(identifier) {
+		TopSelectorSpecificitySelector.prototype.countPseudoElementIdentifiers = function(identifier) {
 			var regex = /::/;
 
 			if (matches = regex.exec(identifier)) {
@@ -100,6 +104,6 @@ define(
 			return 0;
 		};
 
-		return TopSelectorSpecificity;
+		return TopSelectorSpecificitySelector;
 	}
 );

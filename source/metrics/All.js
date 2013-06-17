@@ -1,6 +1,6 @@
 define(
-	'CssTool/Metrics/All',
-	['CssTool/Metrics/Selector', 'CssTool/Metrics/Declaration', 'CssTool/Metrics/Stylesheet'],
+	'metrics/All',
+	['metrics/Selector', 'metrics/Declaration', 'metrics/Stylesheet'],
 
 	function(selectorMetrics, declarationMetrics, stylesheetMetrics) {
 		return {
