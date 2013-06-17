@@ -1,5 +1,5 @@
 define(
-	'ReportWriter/Chrome',
+	'ReportWriterChrome',
 	[],
 
 	function () {

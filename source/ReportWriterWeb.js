@@ -1,5 +1,5 @@
 define(
-	'ReportWriter/Web',
+	'ReportWriterWeb',
 	[],
 
 	function () {
