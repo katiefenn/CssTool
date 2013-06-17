@@ -2,9 +2,9 @@ require.config({
 	baseUrl: 'scripts/Libs',
 	paths: {
 		CssTool: '../CssTool',
-		jquery: "../Libs/jquery/jquery-1.9.1.min",
-		tokenizer: "../Libs/CssParser/tokenizer",
-		parser: "../Libs/CssParser/parser"
+		jquery: "../libs/jquery/jquery-1.9.1.min",
+		tokenizer: "../libs/CssParser/tokenizer",
+		parser: "../libs/CssParser/parser"
 	}
 });
 
@@ -35,7 +35,7 @@ requirejs(['CssTool','CssTool/Metrics/All','jquery'],
 /*
 javascript: (function () {   
     var jsCode = document.createElement('script');   
-    jsCode.setAttribute('src', 'http://localhost/~kas/CssTool/source/Libs/require.js/require.js');
+    jsCode.setAttribute('src', 'http://localhost/~kas/CssTool/source/libs/require.js/require.js');
     jsCode.setAttribute('data-main', 'http://localhost/~kas/CssTool/source/build/app.js');
   document.body.appendChild(jsCode);   
  }());

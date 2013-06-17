@@ -12,8 +12,8 @@
     ],
 	paths: {
 		CssTool: 'CssTool',
-		jquery: "Libs/jquery/jquery-1.9.1.min",
-		tokenizer: "Libs/CssParser/tokenizer",
-		parser: "Libs/CssParser/parser"
+		jquery: "libs/jquery/jquery-1.9.1.min",
+		tokenizer: "libs/CssParser/tokenizer",
+		parser: "libs/CssParser/parser"
 	}
 })
