@@ -1,10 +1,10 @@
 define(
-	'CssParser/NodeAdaptor/Declaration',
+	'NodeAdaptorDeclaration',
 	[],
 
 	function() {
 
-		function CssParserNodeAdaptorDeclaration() {
+		function NodeAdaptorDeclaration() {
 			this.data = {};
 			this.node = {
 				'type': 'declaration',
@@ -13,7 +13,7 @@ define(
 			};
 		}
 
-		CssParserNodeAdaptorDeclaration.prototype.process = function(data) {
+		NodeAdaptorDeclaration.prototype.process = function(data) {
 			this.data = data;
 
 			this.node.property = this.data.name;
@@ -25,7 +25,7 @@ define(
 			return this.node;
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processValue = function(value) {
+		NodeAdaptorDeclaration.prototype.processValue = function(value) {
 			if(value.tokenType == 'HASH') {
 				this.node.values.push(this.processHash(value));
 			}
@@ -49,34 +49,34 @@ define(
 			}
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processHash = function(value) {
+		NodeAdaptorDeclaration.prototype.processHash = function(value) {
 			return {'value': value.value, 'string': '#' + value.value, 'typeGroup': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processPercentage = function(value) {
+		NodeAdaptorDeclaration.prototype.processPercentage = function(value) {
 			return {'value': value.value, 'string': value.value + '%', 'typeGroup': 'numeric', 'type': 'percentage'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processPixel = function(value) {
+		NodeAdaptorDeclaration.prototype.processPixel = function(value) {
 			return {'value': value.num, 'string': value.num + 'px', 'typeGroup': 'length', 'type': 'pixels'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processUrl = function(value) {
+		NodeAdaptorDeclaration.prototype.processUrl = function(value) {
 			return {'value': value.value, 'string': 'url(' + value.value + ')', 'typeGroup': 'textual', 'type': 'url'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processKeyword = function(value) {
+		NodeAdaptorDeclaration.prototype.processKeyword = function(value) {
 			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'keyword'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processNumber = function(value) {
+		NodeAdaptorDeclaration.prototype.processNumber = function(value) {
 			return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'};
 		};
 
-		CssParserNodeAdaptorDeclaration.prototype.processString = function(value) {
+		NodeAdaptorDeclaration.prototype.processString = function(value) {
 			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'string'};
 		};
 
-		return CssParserNodeAdaptorDeclaration;
+		return NodeAdaptorDeclaration;
 	}
 );

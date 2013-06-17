@@ -1,11 +1,11 @@
 define(
 	'CssTool',
-	['CssParser/DataAdaptor', 'Report', 'ReportWriter/Web'],
+	['DataAdaptor', 'Report', 'ReportWriter/Web'],
 
-	function(CssParserDataAdaptor, Report, ReportWriterWeb) {
+	function(DataAdaptor, Report, ReportWriterWeb) {
 		function CssTool(metrics, reportWriter) {
 			var defaultOptions = {
-				'dataAdaptor': new CssParserDataAdaptor,
+				'dataAdaptor': new DataAdaptor,
 				'reportWriter': new ReportWriterWeb,
 				'runFromSource': 0
 			};

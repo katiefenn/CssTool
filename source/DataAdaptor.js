@@ -1,14 +1,14 @@
 define(
-	'CssParser/DataAdaptor',
-	['./NodeAdaptor/Selector', './NodeAdaptor/Declaration','tokenizer', 'parser'],
+	'DataAdaptor',
+	['NodeAdaptorSelector', 'NodeAdaptorDeclaration','tokenizer', 'parser'],
 
-	function (CssParserNodeAdaptorSelector, CssParserNodeAdaptorDeclaration, tokenizer, parser) {
+	function (NodeAdaptorSelector, NodeAdaptorDeclaration, tokenizer, parser) {
 
-		function CssParserDataAdaptor() {
+		function DataAdaptor() {
 			this.catalogItems = [];
 		}
 
-		CssParserDataAdaptor.prototype.process = function(cssString) {
+		DataAdaptor.prototype.process = function(cssString) {
 			var tokens = tokenizer.tokenize(cssString),
 				data = parser.parse(tokens);
 
@@ -21,7 +21,7 @@ define(
 			return this.catalogItems;
 		};
 
-		CssParserDataAdaptor.prototype.processRule = function(data) {
+		DataAdaptor.prototype.processRule = function(data) {
 			if (Object.prototype.toString.call(data.value) == '[object Array]') {
 				for (property in data.value) {
 					if (data.value.hasOwnProperty(property)) {
@@ -42,16 +42,16 @@ define(
 			//this.catalogItems.push(item);
 		};
 
-		CssParserDataAdaptor.prototype.processDeclaration = function(data) {
-			var declarationAdaptor = new CssParserNodeAdaptorDeclaration();
+		DataAdaptor.prototype.processDeclaration = function(data) {
+			var declarationAdaptor = new NodeAdaptorDeclaration();
 			this.catalogItems.push(declarationAdaptor.process(data));
 		};
 
-		CssParserDataAdaptor.prototype.processSelector = function(data) {
-			var selectorAdaptor = new CssParserNodeAdaptorSelector();
+		DataAdaptor.prototype.processSelector = function(data) {
+			var selectorAdaptor = new NodeAdaptorSelector();
 			this.catalogItems.push(selectorAdaptor.process(data));
 		};
 
-		return CssParserDataAdaptor;
+		return DataAdaptor;
 	}
 );

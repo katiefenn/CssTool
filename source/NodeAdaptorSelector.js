@@ -1,9 +1,9 @@
 define(
-	'CssParser/NodeAdaptor/Selector',
+	'NodeAdaptorSelector',
 	[],
 	function () {
 
-		function CssParserNodeAdaptorSelector() {
+		function NodeAdaptorSelector() {
 			this.node = {
 				'selectors': [],
 				'type': 'selector'
@@ -14,7 +14,7 @@ define(
 			this.selectorIndex = 0;
 		}
 
-		CssParserNodeAdaptorSelector.prototype.process = function(data) {
+		NodeAdaptorSelector.prototype.process = function(data) {
 			this.data = data;
 
 			while (!this.endOfTokens()) {
@@ -24,7 +24,7 @@ define(
 			return this.node;
 		};
 
-		CssParserNodeAdaptorSelector.prototype.processToken = function(token) {
+		NodeAdaptorSelector.prototype.processToken = function(token) {
 			if (token.tokenType == 'DELIM' && token.value == '.') {
 				this.addToCurrentIdentifier('.');
 			} else if (token.tokenType == ':') {
@@ -46,7 +46,7 @@ define(
 			}
 		};
 
-		CssParserNodeAdaptorSelector.prototype.addToCurrentIdentifier = function(token) {
+		NodeAdaptorSelector.prototype.addToCurrentIdentifier = function(token) {
 			if (typeof this.node.selectors[this.selectorIndex] == 'undefined') {
 				this.node.selectors[this.selectorIndex] = [];
 				this.identifierIndex = 0;
@@ -58,26 +58,26 @@ define(
 			}
 		};
 
-		CssParserNodeAdaptorSelector.prototype.endOfTokens = function() {
+		NodeAdaptorSelector.prototype.endOfTokens = function() {
 			return this.dataIndex == this.data.length - 1;
 		};
 
-		CssParserNodeAdaptorSelector.prototype.getNextToken = function() {
+		NodeAdaptorSelector.prototype.getNextToken = function() {
 			var currentToken = this.data[this.dataIndex];
 			this.dataIndex++;
 			return currentToken;
 		};
 
-		CssParserNodeAdaptorSelector.prototype.nextTokenIsWhitespace = function() {
+		NodeAdaptorSelector.prototype.nextTokenIsWhitespace = function() {
 			return !this.endOfTokens() && this.data[this.dataIndex].tokenType == 'WHITESPACE';
 		};
 
-		CssParserNodeAdaptorSelector.prototype.nextTokenIsDelimiter = function() {
+		NodeAdaptorSelector.prototype.nextTokenIsDelimiter = function() {
 			return !this.endOfTokens() 
 				&& this.data[this.dataIndex].tokenType == 'DELIM'
 				&& this.data[this.dataIndex].value == ',';
 		};
 
-		return CssParserNodeAdaptorSelector;
+		return NodeAdaptorSelector;
 	}
 );
