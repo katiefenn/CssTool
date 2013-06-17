@@ -1,5 +1,5 @@
 define(
-	'CssTool/CssParser/DataAdaptor',
+	'CssParser/DataAdaptor',
 	['./NodeAdaptor/Selector', './NodeAdaptor/Declaration','tokenizer', 'parser'],
 
 	function (CssParserNodeAdaptorSelector, CssParserNodeAdaptorDeclaration, tokenizer, parser) {

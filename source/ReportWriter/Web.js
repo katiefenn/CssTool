@@ -1,5 +1,5 @@
 define(
-	'CssTool/ReportWriter/Web',
+	'ReportWriter/Web',
 	[],
 
 	function () {

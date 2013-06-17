@@ -1,5 +1,5 @@
 define(
-	'CssTool/CssParser/NodeAdaptor/Selector',
+	'CssParser/NodeAdaptor/Selector',
 	[],
 	function () {
 

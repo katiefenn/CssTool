@@ -1,5 +1,5 @@
 require.config({
-	baseUrl: 'scripts/Libs',
+	baseUrl: 'scripts/libs',
 	paths: {
 		CssTool: '../CssTool',
 		jquery: "../libs/jquery/jquery-1.9.1.min",

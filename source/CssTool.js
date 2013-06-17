@@ -1,6 +1,6 @@
 define(
 	'CssTool',
-	['CssTool/CssParser/DataAdaptor', 'CssTool/Report', 'CssTool/ReportWriter/Web'],
+	['CssParser/DataAdaptor', 'Report', 'ReportWriter/Web'],
 
 	function(CssParserDataAdaptor, Report, ReportWriterWeb) {
 		function CssTool(metrics, reportWriter) {

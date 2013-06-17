@@ -1,5 +1,5 @@
 define(
-	'CssTool/CssParser/NodeAdaptor/Declaration',
+	'CssParser/NodeAdaptor/Declaration',
 	[],
 
 	function() {
