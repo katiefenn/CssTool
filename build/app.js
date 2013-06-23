@@ -1,168 +1,168 @@
 
 define(
-	'NodeAdaptorSelector',
-	[],
-	function () {
+    'NodeAdaptorSelector',
+    [],
+    function () {
 
-		function NodeAdaptorSelector() {
-			this.node = {
-				'selectors': [],
-				'type': 'selector'
-			};
-			this.data = {};
-			this.dataIndex = 0;
-			this.identifierIndex = 0;
-			this.selectorIndex = 0;
-		}
+        function NodeAdaptorSelector() {
+            this.node = {
+                'selectors': [],
+                'type': 'selector'
+            };
+            this.data = {};
+            this.dataIndex = 0;
+            this.identifierIndex = 0;
+            this.selectorIndex = 0;
+        }
 
-		NodeAdaptorSelector.prototype.process = function(data) {
-			this.data = data;
+        NodeAdaptorSelector.prototype.process = function(data) {
+            this.data = data;
 
-			while (!this.endOfTokens()) {
-				this.processToken(this.getNextToken());
-			}
+            while (!this.endOfTokens()) {
+                this.processToken(this.getNextToken());
+            }
 
-			return this.node;
-		};
+            return this.node;
+        };
 
-		NodeAdaptorSelector.prototype.processToken = function(token) {
-			if (token.tokenType == 'DELIM' && token.value == '.') {
-				this.addToCurrentIdentifier('.');
-			} else if (token.tokenType == ':') {
-				this.addToCurrentIdentifier(':');
-			} else if (token.tokenType == 'HASH') {
-				this.addToCurrentIdentifier('#' +  token.value);
-			} else if (token.tokenType == 'IDENT') {
-				this.addToCurrentIdentifier(token.value);
-			} else if (token.tokenType == 'WHITESPACE') {
-				this.identifierIndex++;
-				this.addToCurrentIdentifier(' ');
-				this.identifierIndex++;
-			} else if (token.tokenType == 'DELIM' && token.value == ',') {
-				return;		
-			}
+        NodeAdaptorSelector.prototype.processToken = function(token) {
+            if (token.tokenType == 'DELIM' && token.value == '.') {
+                this.addToCurrentIdentifier('.');
+            } else if (token.tokenType == ':') {
+                this.addToCurrentIdentifier(':');
+            } else if (token.tokenType == 'HASH') {
+                this.addToCurrentIdentifier('#' +  token.value);
+            } else if (token.tokenType == 'IDENT') {
+                this.addToCurrentIdentifier(token.value);
+            } else if (token.tokenType == 'WHITESPACE') {
+                this.identifierIndex++;
+                this.addToCurrentIdentifier(' ');
+                this.identifierIndex++;
+            } else if (token.tokenType == 'DELIM' && token.value == ',') {
+                return;        
+            }
 
-			if (this.nextTokenIsDelimiter()) {
-				this.selectorIndex++;
-			}
-		};
+            if (this.nextTokenIsDelimiter()) {
+                this.selectorIndex++;
+            }
+        };
 
-		NodeAdaptorSelector.prototype.addToCurrentIdentifier = function(token) {
-			if (typeof this.node.selectors[this.selectorIndex] == 'undefined') {
-				this.node.selectors[this.selectorIndex] = [];
-				this.identifierIndex = 0;
-			}
-			if (typeof this.node.selectors[this.selectorIndex][this.identifierIndex] == 'undefined') {
-				this.node.selectors[this.selectorIndex][this.identifierIndex] = token;
-			} else {
-				this.node.selectors[this.selectorIndex][this.identifierIndex] += token;
-			}
-		};
+        NodeAdaptorSelector.prototype.addToCurrentIdentifier = function(token) {
+            if (typeof this.node.selectors[this.selectorIndex] == 'undefined') {
+                this.node.selectors[this.selectorIndex] = [];
+                this.identifierIndex = 0;
+            }
+            if (typeof this.node.selectors[this.selectorIndex][this.identifierIndex] == 'undefined') {
+                this.node.selectors[this.selectorIndex][this.identifierIndex] = token;
+            } else {
+                this.node.selectors[this.selectorIndex][this.identifierIndex] += token;
+            }
+        };
 
-		NodeAdaptorSelector.prototype.endOfTokens = function() {
-			return this.dataIndex == this.data.length - 1;
-		};
+        NodeAdaptorSelector.prototype.endOfTokens = function() {
+            return this.dataIndex == this.data.length - 1;
+        };
 
-		NodeAdaptorSelector.prototype.getNextToken = function() {
-			var currentToken = this.data[this.dataIndex];
-			this.dataIndex++;
-			return currentToken;
-		};
+        NodeAdaptorSelector.prototype.getNextToken = function() {
+            var currentToken = this.data[this.dataIndex];
+            this.dataIndex++;
+            return currentToken;
+        };
 
-		NodeAdaptorSelector.prototype.nextTokenIsWhitespace = function() {
-			return !this.endOfTokens() && this.data[this.dataIndex].tokenType == 'WHITESPACE';
-		};
+        NodeAdaptorSelector.prototype.nextTokenIsWhitespace = function() {
+            return !this.endOfTokens() && this.data[this.dataIndex].tokenType == 'WHITESPACE';
+        };
 
-		NodeAdaptorSelector.prototype.nextTokenIsDelimiter = function() {
-			return !this.endOfTokens() 
-				&& this.data[this.dataIndex].tokenType == 'DELIM'
-				&& this.data[this.dataIndex].value == ',';
-		};
+        NodeAdaptorSelector.prototype.nextTokenIsDelimiter = function() {
+            return !this.endOfTokens() &&
+                this.data[this.dataIndex].tokenType == 'DELIM' &&
+                this.data[this.dataIndex].value == ',';
+        };
 
-		return NodeAdaptorSelector;
-	}
+        return NodeAdaptorSelector;
+    }
 );
 define(
-	'NodeAdaptorDeclaration',
-	[],
+    'NodeAdaptorDeclaration',
+    [],
 
-	function() {
+    function() {
 
-		function NodeAdaptorDeclaration() {
-			this.data = {};
-			this.node = {
-				'type': 'declaration',
-				'property': '',
-				'values': []
-			};
-		}
+        function NodeAdaptorDeclaration() {
+            this.data = {};
+            this.node = {
+                'type': 'declaration',
+                'property': '',
+                'values': []
+            };
+        }
 
-		NodeAdaptorDeclaration.prototype.process = function(data) {
-			this.data = data;
+        NodeAdaptorDeclaration.prototype.process = function(data) {
+            this.data = data;
 
-			this.node.property = this.data.name;
+            this.node.property = this.data.name;
 
-			_.each(this.data.value, function(value){
-				this.processValue(value);
-			}, this);
+            _.each(this.data.value, function(value){
+                this.processValue(value);
+            }, this);
 
-			return this.node;
-		};
+            return this.node;
+        };
 
-		NodeAdaptorDeclaration.prototype.processValue = function(value) {
-			if(value.tokenType == 'HASH') {
-				this.node.values.push(this.processHash(value));
-			}
-			else if(value.tokenType == 'PERCENTAGE') {
-				this.node.values.push(this.processPercentage(value));
-			}
-			else if(value.tokenType == 'DIMENSION') {
-				this.node.values.push(this.processPixel(value));
-			}
-			else if(value.tokenType == 'URL') {
-				this.node.values.push(this.processUrl(value))
-			}
-			else if(value.tokenType == 'IDENT') {
-				this.node.values.push(this.processKeyword(value));
-			}
-			else if (value.tokenType == 'NUMBER') {
-				this.node.values.push(this.processNumber(value));
-			}
-			else if (value.tokenType == 'STRING') {
-				this.node.values.push(this.processString(value));
-			}
-		};
+        NodeAdaptorDeclaration.prototype.processValue = function(value) {
+            if(value.tokenType == 'HASH') {
+                this.node.values.push(this.processHash(value));
+            }
+            else if(value.tokenType == 'PERCENTAGE') {
+                this.node.values.push(this.processPercentage(value));
+            }
+            else if(value.tokenType == 'DIMENSION') {
+                this.node.values.push(this.processPixel(value));
+            }
+            else if(value.tokenType == 'URL') {
+                this.node.values.push(this.processUrl(value));
+            }
+            else if(value.tokenType == 'IDENT') {
+                this.node.values.push(this.processKeyword(value));
+            }
+            else if (value.tokenType == 'NUMBER') {
+                this.node.values.push(this.processNumber(value));
+            }
+            else if (value.tokenType == 'STRING') {
+                this.node.values.push(this.processString(value));
+            }
+        };
 
-		NodeAdaptorDeclaration.prototype.processHash = function(value) {
-			return {'value': value.value, 'string': '#' + value.value, 'typeGroup': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
-		};
+        NodeAdaptorDeclaration.prototype.processHash = function(value) {
+            return {'value': value.value, 'string': '#' + value.value, 'typeGroup': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processPercentage = function(value) {
-			return {'value': value.value, 'string': value.value + '%', 'typeGroup': 'numeric', 'type': 'percentage'};
-		};
+        NodeAdaptorDeclaration.prototype.processPercentage = function(value) {
+            return {'value': value.value, 'string': value.value + '%', 'typeGroup': 'numeric', 'type': 'percentage'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processPixel = function(value) {
-			return {'value': value.num, 'string': value.num + 'px', 'typeGroup': 'length', 'type': 'pixels'};
-		};
+        NodeAdaptorDeclaration.prototype.processPixel = function(value) {
+            return {'value': value.num, 'string': value.num + 'px', 'typeGroup': 'length', 'type': 'pixels'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processUrl = function(value) {
-			return {'value': value.value, 'string': 'url(' + value.value + ')', 'typeGroup': 'textual', 'type': 'url'};
-		};
+        NodeAdaptorDeclaration.prototype.processUrl = function(value) {
+            return {'value': value.value, 'string': 'url(' + value.value + ')', 'typeGroup': 'textual', 'type': 'url'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processKeyword = function(value) {
-			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'keyword'};
-		};
+        NodeAdaptorDeclaration.prototype.processKeyword = function(value) {
+            return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'keyword'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processNumber = function(value) {
-			return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'};
-		};
+        NodeAdaptorDeclaration.prototype.processNumber = function(value) {
+            return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'};
+        };
 
-		NodeAdaptorDeclaration.prototype.processString = function(value) {
-			return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'string'};
-		};
+        NodeAdaptorDeclaration.prototype.processString = function(value) {
+            return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'string'};
+        };
 
-		return NodeAdaptorDeclaration;
-	}
+        return NodeAdaptorDeclaration;
+    }
 );
 (function (root, factory) {
     // Universal Module Definition (UMD) to support AMD, CommonJS/Node.js,
@@ -1285,754 +1285,767 @@ define("underscore", (function (global) {
 }(this)));
 
 define(
-	'DataAdaptor',
-	['NodeAdaptorSelector', 'NodeAdaptorDeclaration','tokenizer', 'parser', 'underscore'],
+    'DataAdaptor',
+    ['NodeAdaptorSelector', 'NodeAdaptorDeclaration','tokenizer', 'parser', 'underscore'],
 
-	function (NodeAdaptorSelector, NodeAdaptorDeclaration, tokenizer, parser, _) {
+    function (NodeAdaptorSelector, NodeAdaptorDeclaration, tokenizer, parser, _) {
 
-		function DataAdaptor() {
-			this.catalogItems = [];
-		}
+        function DataAdaptor() {
+            this.catalogItems = [];
+        }
 
-		DataAdaptor.prototype.process = function(cssString) {
-			var tokens = tokenizer.tokenize(cssString),
-				data = parser.parse(tokens);
+        DataAdaptor.prototype.process = function(cssString) {
+            var tokens = tokenizer.tokenize(cssString),
+                data = parser.parse(tokens);
 
-			_.each(data.value, function(rule){
-				this.processRule(rule);
-			}, this);
+            _.each(data.value, function(rule){
+                this.processRule(rule);
+            }, this);
 
-			return this.catalogItems;
-		};
+            return this.catalogItems;
+        };
 
-		DataAdaptor.prototype.processRule = function(data) {
-			if (_.isArray(data.value)) {
-				_.each(data.value, function(property){
-					this.processDeclaration(property);
-				}, this);
-			}
+        DataAdaptor.prototype.processRule = function(data) {
+            if (_.isArray(data.value)) {
+                _.each(data.value, function(property){
+                    this.processDeclaration(property);
+                }, this);
+            }
 
-			if (_.has(data, 'selector')) {
-				this.processSelector(data.selector);
-			}
+            if (_.has(data, 'selector')) {
+                this.processSelector(data.selector);
+            }
 
-			var item = {
-				'type': 'rule',
-				'string': data.toString()
-			}
+            var item = {
+                'type': 'rule',
+                'string': data.toString()
+            };
 
-			//this.catalogItems.push(item);
-		};
+            //this.catalogItems.push(item);
+        };
 
-		DataAdaptor.prototype.processDeclaration = function(data) {
-			var declarationAdaptor = new NodeAdaptorDeclaration();
-			this.catalogItems.push(declarationAdaptor.process(data));
-		};
+        DataAdaptor.prototype.processDeclaration = function(data) {
+            var declarationAdaptor = new NodeAdaptorDeclaration();
+            this.catalogItems.push(declarationAdaptor.process(data));
+        };
 
-		DataAdaptor.prototype.processSelector = function(data) {
-			var selectorAdaptor = new NodeAdaptorSelector();
-			this.catalogItems.push(selectorAdaptor.process(data));
-		};
+        DataAdaptor.prototype.processSelector = function(data) {
+            var selectorAdaptor = new NodeAdaptorSelector();
+            this.catalogItems.push(selectorAdaptor.process(data));
+        };
 
-		return DataAdaptor;
-	}
+        return DataAdaptor;
+    }
 );
 define(
-	'Report',
-	['underscore'],
+    'Report',
+    ['underscore'],
 
-	function (_) {
+    function (_) {
 
-		function Report(catalogData, metrics) {
-			this.catalog = catalogData;
-			this.results = {};
-			this.metrics = metrics;
-		}
+        function Report(catalogData, metrics) {
+            this.catalog = catalogData;
+            this.results = {};
+            this.metrics = metrics;
+        }
 
-		Report.prototype.run = function() {
-			this.catalog.forEach(function(stylesheet) {
-				this.runMetricsOnStylesheet(stylesheet, this.metrics.stylesheet);
+        Report.prototype.run = function() {
+            this.catalog.forEach(function(stylesheet) {
+                this.runMetricsOnStylesheet(stylesheet, this.metrics.stylesheet);
 
-				_.each(stylesheet, function(rulePart){
-					if(rulePart.type == 'selector') {
-						this.runMetricsOnCatalogItem(rulePart, this.metrics.selector);
-					}
-					else if(rulePart.type == 'declaration') {
-						this.runMetricsOnCatalogItem(rulePart, this.metrics.declaration);
-					}
-				}, this);
-			}, this);
+                _.each(stylesheet, function(rulePart){
+                    if(rulePart.type == 'selector') {
+                        this.runMetricsOnCatalogItem(rulePart, this.metrics.selector);
+                    }
+                    else if(rulePart.type == 'declaration') {
+                        this.runMetricsOnCatalogItem(rulePart, this.metrics.declaration);
+                    }
+                }, this);
+            }, this);
 
-			return this.results;
-		};
+            return this.results;
+        };
 
-		Report.prototype.runMetricsOnStylesheet = function(catalogItem, metrics) {
-			_.each(metrics, function(metric){
-				_.extend(this.results, metric.measure(catalogItem));
-			}, this);
-		};
+        Report.prototype.runMetricsOnStylesheet = function(catalogItem, metrics) {
+            _.each(metrics, function(metric){
+                _.extend(this.results, metric.measure(catalogItem));
+            }, this);
+        };
 
-		Report.prototype.runMetricsOnCatalogItem = function(catalogItem, metrics) {
-			_.each(metrics, function(metric){
-				_.extend(this.results, metric.measure(catalogItem));
-			}, this);
-		};
+        Report.prototype.runMetricsOnCatalogItem = function(catalogItem, metrics) {
+            _.each(metrics, function(metric){
+                _.extend(this.results, metric.measure(catalogItem));
+            }, this);
+        };
 
-		return Report;
-	}
+        return Report;
+    }
 );
 define(
-	'ReportWriterConsole',
-	[],
+    'ReportWriterConsole',
+    [],
 
-	function () {
-		function ReportWriterConsole() {
+    function () {
+        function ReportWriterConsole() {
 
-		}
+        }
 
-		ReportWriterConsole.prototype.writeReport = function(results) {
-			console.log(results);
-		};
+        ReportWriterConsole.prototype.writeReport = function(results) {
+            console.log(results);
+        };
 
-		return ReportWriterConsole;
-	}
+        return ReportWriterConsole;
+    }
 );
 define(
-	'CssTool',
-	['DataAdaptor', 'Report', 'ReportWriterConsole'],
+    'CssTool',
+    ['DataAdaptor', 'Report', 'ReportWriterConsole'],
 
-	function(DataAdaptor, Report, ReportWriterConsole) {
-		function CssTool(metrics, options) {
-			var defaults = {
-				'dataAdaptor': new DataAdaptor,
-				'reportWriter': new ReportWriterConsole,
-				'runFromSource': 0
-			};
+    function(DataAdaptor, Report, ReportWriterConsole) {
+        function CssTool(metrics, options) {
+            var defaults = {
+                'dataAdaptor': new DataAdaptor(),
+                'reportWriter': new ReportWriterConsole(),
+                'runFromSource': 0
+            };
 
-			if(_.isUndefined(options)) {
-				options = {};
-			}
+            if(_.isUndefined(options)) {
+                options = {};
+            }
 
-			this.metrics = metrics;
-			this.settings = defaults;
-			_.extend(this.settings, options);
-		}
+            this.metrics = metrics;
+            this.settings = defaults;
+            _.extend(this.settings, options);
+        }
 
-		CssTool.prototype.runReport = function (stylesheets) {
-			var catalogData = [];
+        CssTool.prototype.runReport = function (stylesheets) {
+            var catalogData = [];
 
-			if (Object.prototype.toString.call(stylesheets) === '[object Array]') {
-				stylesheets.forEach(function(stylesheet) {
-					catalogData.push(this.settings.dataAdaptor.process(stylesheet));
-				}, this);
-				
-				var report = new Report(catalogData, this.metrics);
-				this.settings.reportWriter.writeReport(report.run());
-			}
-		}
+            if (Object.prototype.toString.call(stylesheets) === '[object Array]') {
+                stylesheets.forEach(function(stylesheet) {
+                    catalogData.push(this.settings.dataAdaptor.process(stylesheet));
+                }, this);
+                
+                var report = new Report(catalogData, this.metrics);
+                this.settings.reportWriter.writeReport(report.run());
+            }
+        };
 
-		return CssTool;
-	}
+        return CssTool;
+    }
 );
 define(
-	'metrics/IdentifiersPerSelector',
-	[],
+    'metrics/IdentifiersPerSelector',
+    [],
 
-	function() {
-		function IdentifiersPerSelector() {
-			this.totalIdentifiers = 0;
-			this.totalSelectors = 0;
-		}
+    function() {
+        function IdentifiersPerSelector() {
+            this.totalIdentifiers = 0;
+            this.totalSelectors = 0;
+        }
 
-		IdentifiersPerSelector.prototype.measure = function(selectorData) {
-			this.totalSelectors += selectorData.selectors.length;
+        IdentifiersPerSelector.prototype.measure = function(selectorData) {
+            this.totalSelectors += selectorData.selectors.length;
 
-			_.each(selectorData.selectors, function(selector){
-				this.totalIdentifiers += selector.length;
-			}, this);
+            _.each(selectorData.selectors, function(selector){
+                this.totalIdentifiers += selector.length;
+            }, this);
 
-			return {
-				'identifiers-per-selector': this.totalIdentifiers / this.totalSelectors
-			};
-		};
+            return {
+                'identifiers-per-selector': this.totalIdentifiers / this.totalSelectors
+            };
+        };
 
-		return IdentifiersPerSelector;
-	}
+        return IdentifiersPerSelector;
+    }
 );
 define(
-	'metrics/TotalSelectors',
-	[],
+    'metrics/TotalSelectors',
+    [],
 
-	function() {
-		function TotalSelectors () {
-			this.totalSelectors = 0;
-		}
+    function() {
+        function TotalSelectors () {
+            this.totalSelectors = 0;
+        }
 
-		TotalSelectors.prototype.measure = function(selectorData) {
-			this.totalSelectors += selectorData.selectors.length;
+        TotalSelectors.prototype.measure = function(selectorData) {
+            this.totalSelectors += selectorData.selectors.length;
 
-			return {
-				'total-selectors': this.totalSelectors
-			};
-		};
+            return {
+                'total-selectors': this.totalSelectors
+            };
+        };
 
-		return TotalSelectors;
-	}
+        return TotalSelectors;
+    }
 );
 define(
-	'metrics/TotalIdentifiers',
-	[],
+    'metrics/TotalIdentifiers',
+    [],
 
-	function () {
+    function () {
 
-		function TotalIdentifiers () {
-			this.totalIdentifiers = 0;
-		}
+        function TotalIdentifiers () {
+            this.totalIdentifiers = 0;
+        }
 
-		TotalIdentifiers.prototype.measure = function(selectorData) {
-			_.each(selectorData, function(selector){
-				this.totalIdentifiers += selector.length;
-			}, this);
+        TotalIdentifiers.prototype.measure = function(selectorData) {
+            _.each(selectorData, function(selector){
+                this.totalIdentifiers += selector.length;
+            }, this);
 
-			return {
-				'total-identifiers': this.totalIdentifiers
-			}
-		};
+            return {
+                'total-identifiers': this.totalIdentifiers
+            };
+        };
 
-		return TotalIdentifiers;
-	}
+        return TotalIdentifiers;
+    }
 );
 define(
-	'metrics/SelectorsPerRule',
-	[],
+    'metrics/SelectorsPerRule',
+    [],
 
-	function () {
-		function SelectorsPerRule() {
-			this.totalSelectors = 0;
-			this.totalRules = 0;
-		}
+    function () {
+        function SelectorsPerRule() {
+            this.totalSelectors = 0;
+            this.totalRules = 0;
+        }
 
-		SelectorsPerRule.prototype.measure = function(selectorData) {
-			this.totalRules++;
-			this.totalSelectors += selectorData.selectors.length;
+        SelectorsPerRule.prototype.measure = function(selectorData) {
+            this.totalRules++;
+            this.totalSelectors += selectorData.selectors.length;
 
-			return {
-				'selectors-per-rule': this.totalSelectors / this.totalRules
-			};
-		};
+            return {
+                'selectors-per-rule': this.totalSelectors / this.totalRules
+            };
+        };
 
-		return SelectorsPerRule;
-	}
+        return SelectorsPerRule;
+    }
 );
 define(
-	'metrics/SpecificityPerSelector',
-	[],
+    'metrics/SpecificityPerSelector',
+    [],
 
-	function() {
+    function() {
 
-		function SpecificityPerSelector() {
-			this.totalSpecificity = 0;
-			this.totalSelectors = 0;
-		}
+        function SpecificityPerSelector() {
+            this.totalSpecificity = 0;
+            this.totalSelectors = 0;
+        }
 
-		SpecificityPerSelector.prototype.measure = function(selectorData) {
-			this.totalSelectors += selectorData.selectors.length;
+        SpecificityPerSelector.prototype.measure = function(selectorData) {
+            this.totalSelectors += selectorData.selectors.length;
 
-			_.each(selectorData, function(selector){
-				_.each(selector, function(identifier){
-					idIdentifiers = this.countIdIdentifiers(identifier),
-					classIdentifiers = this.countClassIdentifiers(identifier),
-					attributeIdentifiers = this.countAttributeIdentifiers(identifier),
-					pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
-					typeIdentifiers = this.countTypeIdentifiers(identifier),
-					pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
+            _.each(selectorData, function(selector){
+                _.each(selector, function(identifier){
+                    var idIdentifiers = this.countIdIdentifiers(identifier),
+                    classIdentifiers = this.countClassIdentifiers(identifier),
+                    attributeIdentifiers = this.countAttributeIdentifiers(identifier),
+                    pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
+                    typeIdentifiers = this.countTypeIdentifiers(identifier),
+                    pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
 
-					this.totalSpecificity += Number(
-						String(idIdentifiers) + 
-						String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
-						String(typeIdentifiers + pseudoElementIdentifiers));					
-				}, this);
-			}, this);
+                    this.totalSpecificity += Number(
+                        String(idIdentifiers) + 
+                        String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
+                        String(typeIdentifiers + pseudoElementIdentifiers));
+                }, this);
+            }, this);
 
-			return {
-				'specificity-per-selector': this.totalSpecificity / this.totalSelectors
-			};
-		};
+            return {
+                'specificity-per-selector': this.totalSpecificity / this.totalSelectors
+            };
+        };
 
-		SpecificityPerSelector.prototype.countIdIdentifiers = function(identifier) {
-			var regex = /#/;
+       SpecificityPerSelector.prototype.countIdIdentifiers = function(identifier) {
+            var regex = /#/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		SpecificityPerSelector.prototype.countClassIdentifiers = function(identifier) {
-			var regex = /\./;
+        SpecificityPerSelector.prototype.countClassIdentifiers = function(identifier) {
+            var regex = /\./,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		SpecificityPerSelector.prototype.countAttributeIdentifiers = function(identifier) {
-			var regex = /\[/;
+        SpecificityPerSelector.prototype.countAttributeIdentifiers = function(identifier) {
+            var regex = /\[/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		SpecificityPerSelector.prototype.countPseudoClassIdentifiers = function(identifier) {
-			var regex = /:[^:]/;
+        SpecificityPerSelector.prototype.countPseudoClassIdentifiers = function(identifier) {
+            var regex = /:[^:]/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		SpecificityPerSelector.prototype.countTypeIdentifiers = function(identifier) {
-			var regex = /^[a-zA-Z_]/;
+        SpecificityPerSelector.prototype.countTypeIdentifiers = function(identifier) {
+            var regex = /^[a-zA-Z_]/;
 
-			if (regex.exec(identifier)) {
-				return 1
-			}
+            if (regex.exec(identifier)) {
+                return 1;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		SpecificityPerSelector.prototype.countPseudoElementIdentifiers = function(identifier) {
-			var regex = /::/;
+        SpecificityPerSelector.prototype.countPseudoElementIdentifiers = function(identifier) {
+            var regex = /::/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
-
-		return SpecificityPerSelector;
-	}
+            return 0;
+        };
+        
+        return SpecificityPerSelector;
+    }
 );
 define(
-	'metrics/TopSelectorSpecificity',
-	[],
+    'metrics/TopSelectorSpecificity',
+    [],
 
-	function () {
-		function TopSelectorSpecificity() {
-			this.topSelectorSpecificity = 0;
-		}
+    function () {
+        function TopSelectorSpecificity() {
+            this.topSelectorSpecificity = 0;
+        }
 
-		TopSelectorSpecificity.prototype.measure = function(selectorData) {
-			_.each(selectorData.selectors, function(selector){
-				var specificity = 0;
-				_.each(selector, function(identifier){
-					var idIdentifiers = this.countIdIdentifiers(identifier),
-						classIdentifiers = this.countClassIdentifiers(identifier),
-						attributeIdentifiers = this.countAttributeIdentifiers(identifier),
-						pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
-						typeIdentifiers = this.countTypeIdentifiers(identifier),
-						pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
+        TopSelectorSpecificity.prototype.measure = function(selectorData) {
+            _.each(selectorData.selectors, function(selector){
+                var specificity = 0;
+                _.each(selector, function(identifier){
+                    var idIdentifiers = this.countIdIdentifiers(identifier),
+                        classIdentifiers = this.countClassIdentifiers(identifier),
+                        attributeIdentifiers = this.countAttributeIdentifiers(identifier),
+                        pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
+                        typeIdentifiers = this.countTypeIdentifiers(identifier),
+                        pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
 
-					specificity += Number(
-						String(idIdentifiers) + 
-						String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
-						String(typeIdentifiers + pseudoElementIdentifiers));
+                    specificity += Number(
+                        String(idIdentifiers) + 
+                        String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
+                        String(typeIdentifiers + pseudoElementIdentifiers));
 
-				}, this);
+                }, this);
 
-				if(specificity > this.topSelectorSpecificity) {
-					this.topSelectorSpecificity = specificity;
+                if(specificity > this.topSelectorSpecificity) {
+                    this.topSelectorSpecificity = specificity;
                 }
-			}, this);
+            }, this);
 
-			return {
-				'top-selector-specificity': this.topSelectorSpecificity
-			};
-		};		
+            return {
+                'top-selector-specificity': this.topSelectorSpecificity
+            };
+        };        
 
-		TopSelectorSpecificity.prototype.countIdIdentifiers = function(identifier) {
-			var regex = /#/;
+        TopSelectorSpecificity.prototype.countIdIdentifiers = function(identifier) {
+            var regex = /#/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificity.prototype.countClassIdentifiers = function(identifier) {
-			var regex = /\./;
+        TopSelectorSpecificity.prototype.countClassIdentifiers = function(identifier) {
+            var regex = /\./,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificity.prototype.countAttributeIdentifiers = function(identifier) {
-			var regex = /\[/;
+        TopSelectorSpecificity.prototype.countAttributeIdentifiers = function(identifier) {
+            var regex = /\[/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificity.prototype.countPseudoClassIdentifiers = function(identifier) {
-			var regex = /:[^:]/;
+        TopSelectorSpecificity.prototype.countPseudoClassIdentifiers = function(identifier) {
+            var regex = /:[^:]/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificity.prototype.countTypeIdentifiers = function(identifier) {
-			var regex = /^[a-zA-Z_]/;
+        TopSelectorSpecificity.prototype.countTypeIdentifiers = function(identifier) {
+            var regex = /^[a-zA-Z_]/;
 
-			if (regex.exec(identifier)) {
-				return 1
-			}
+            if (regex.exec(identifier)) {
+                return 1;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificity.prototype.countPseudoElementIdentifiers = function(identifier) {
-			var regex = /::/;
+        TopSelectorSpecificity.prototype.countPseudoElementIdentifiers = function(identifier) {
+            var regex = /::/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		return TopSelectorSpecificity;
-	}
+        return TopSelectorSpecificity;
+    }
 );
 define(
-	'metrics/TopSelectorSpecificitySelector',
-	[],
+    'metrics/TopSelectorSpecificitySelector',
+    [],
 
-	function () {
-		function TopSelectorSpecificitySelector() {
-			this.topSelectorSpecificity = 0;
-			this.topSelectorSpecificitySelector = "";
-		}
+    function () {
+        function TopSelectorSpecificitySelector() {
+            this.topSelectorSpecificity = 0;
+            this.topSelectorSpecificitySelector = "";
+        }
 
-		TopSelectorSpecificitySelector.prototype.measure = function(selectorData) {
-			_.each(selectorData.selectors, function(selector){
-				var specificity = 0,
-					selectorString = "";
+        TopSelectorSpecificitySelector.prototype.measure = function(selectorData) {
+            _.each(selectorData.selectors, function(selector){
+                var specificity = 0,
+                    selectorString = "";
 
-				_.each(selector, function(identifier){
-					selectorString += identifier;
-					var idIdentifiers = this.countIdIdentifiers(identifier),
-						classIdentifiers = this.countClassIdentifiers(identifier),
-						attributeIdentifiers = this.countAttributeIdentifiers(identifier),
-						pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
-						typeIdentifiers = this.countTypeIdentifiers(identifier),
-						pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
-						
-					specificity += Number(
-						String(idIdentifiers) + 
-						String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
-						String(typeIdentifiers + pseudoElementIdentifiers));
-				}, this);
-				
-				if(specificity > this.topSelectorSpecificity) {
-					this.topSelectorSpecificity = specificity;
-					this.topSelectorSpecificitySelector = selectorString;
-				}
-			}, this);
+                _.each(selector, function(identifier){
+                    selectorString += identifier;
+                    var idIdentifiers = this.countIdIdentifiers(identifier),
+                        classIdentifiers = this.countClassIdentifiers(identifier),
+                        attributeIdentifiers = this.countAttributeIdentifiers(identifier),
+                        pseudoClassIdentifiers = this.countPseudoClassIdentifiers(identifier),
+                        typeIdentifiers = this.countTypeIdentifiers(identifier),
+                        pseudoElementIdentifiers = this.countPseudoElementIdentifiers(identifier);
+                        
+                    specificity += Number(
+                        String(idIdentifiers) + 
+                        String(classIdentifiers + attributeIdentifiers + pseudoClassIdentifiers) + 
+                        String(typeIdentifiers + pseudoElementIdentifiers));
+                }, this);
+                
+                if(specificity > this.topSelectorSpecificity) {
+                    this.topSelectorSpecificity = specificity;
+                    this.topSelectorSpecificitySelector = selectorString;
+                }
+            }, this);
 
 
-			return {
-				'top-selector-specificity-selector': this.topSelectorSpecificitySelector
-			};
-		};		
+            return {
+                'top-selector-specificity-selector': this.topSelectorSpecificitySelector
+            };
+        };        
 
-		TopSelectorSpecificitySelector.prototype.countIdIdentifiers = function(identifier) {
-			var regex = /#/;
+       TopSelectorSpecificitySelector.prototype.countIdIdentifiers = function(identifier) {
+            var regex = /#/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificitySelector.prototype.countClassIdentifiers = function(identifier) {
-			var regex = /\./;
+        TopSelectorSpecificitySelector.prototype.countClassIdentifiers = function(identifier) {
+            var regex = /\./,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificitySelector.prototype.countAttributeIdentifiers = function(identifier) {
-			var regex = /\[/;
+        TopSelectorSpecificitySelector.prototype.countAttributeIdentifiers = function(identifier) {
+            var regex = /\[/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificitySelector.prototype.countPseudoClassIdentifiers = function(identifier) {
-			var regex = /:[^:]/;
+        TopSelectorSpecificitySelector.prototype.countPseudoClassIdentifiers = function(identifier) {
+            var regex = /:[^:]/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificitySelector.prototype.countTypeIdentifiers = function(identifier) {
-			var regex = /^[a-zA-Z_]/;
+        TopSelectorSpecificitySelector.prototype.countTypeIdentifiers = function(identifier) {
+            var regex = /^[a-zA-Z_]/;
 
-			if (regex.exec(identifier)) {
-				return 1
-			}
+            if (regex.exec(identifier)) {
+                return 1;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		TopSelectorSpecificitySelector.prototype.countPseudoElementIdentifiers = function(identifier) {
-			var regex = /::/;
+        TopSelectorSpecificitySelector.prototype.countPseudoElementIdentifiers = function(identifier) {
+            var regex = /::/,
+                matches = regex.exec(identifier);
 
-			if (matches = regex.exec(identifier)) {
-				return matches.length;
-			}
+            if (matches) {
+                return matches.length;
+            }
 
-			return 0;
-		};
+            return 0;
+        };
 
-		return TopSelectorSpecificitySelector;
-	}
+        return TopSelectorSpecificitySelector;
+    }
 );
 define(
-	'metrics/Selector',
-	[
-		'metrics/IdentifiersPerSelector', 'metrics/TotalSelectors',
-		'metrics/TotalIdentifiers', 'metrics/SelectorsPerRule',
-		'metrics/SpecificityPerSelector', 'metrics/TopSelectorSpecificity',
-		'metrics/TopSelectorSpecificitySelector'
+    'metrics/Selector',
+    [
+        'metrics/IdentifiersPerSelector', 'metrics/TotalSelectors',
+        'metrics/TotalIdentifiers', 'metrics/SelectorsPerRule',
+        'metrics/SpecificityPerSelector', 'metrics/TopSelectorSpecificity',
+        'metrics/TopSelectorSpecificitySelector'
 
-	],
-	function(
-		IdentifiersPerSelector, TotalSelectors, TotalIdentifiers, SelectorsPerRule,
-		SpecificityPerSelector, TopSelectorSpecificity, TopSelectorSpecificitySelector
-	) {
-		return [
-			new IdentifiersPerSelector,
-			new TotalSelectors,
-			new TotalIdentifiers,
-			new SelectorsPerRule,
-			new SpecificityPerSelector,
-			new TopSelectorSpecificity,
-			new TopSelectorSpecificitySelector
-		];
-	}
+    ],
+    function(
+        IdentifiersPerSelector, TotalSelectors, TotalIdentifiers, SelectorsPerRule,
+        SpecificityPerSelector, TopSelectorSpecificity, TopSelectorSpecificitySelector
+    ) {
+        return [
+            new IdentifiersPerSelector(),
+            new TotalSelectors(),
+            new TotalIdentifiers(),
+            new SelectorsPerRule(),
+            new SpecificityPerSelector(),
+            new TopSelectorSpecificity(),
+            new TopSelectorSpecificitySelector()
+        ];
+    }
 );
 define(
-	'metrics/TotalUniqueColours',
-	[],
+    'metrics/TotalUniqueColours',
+    [],
 
-	function() {
-		function TotalUniqueColours() {
-			this.uniqueColours = [];
-		}
+    function() {
+        function TotalUniqueColours() {
+            this.uniqueColours = [];
+        }
 
-		TotalUniqueColours.prototype.measure = function(selectorData) {
-			_.each(selectorData.values, function(value){
-				if(value.typeGroup == 'color') {
-					var hash = getLongHashForm(value.value.toLowerCase());
+        TotalUniqueColours.prototype.measure = function(selectorData) {
+            _.each(selectorData.values, function(value){
+                if(value.typeGroup == 'color') {
+                    var hash = getLongHashForm(value.value.toLowerCase());
 
-					if(this.uniqueColours.indexOf(hash) === -1) {
-						this.uniqueColours.push(hash);
-					}
-				}				
-			}, this);
+                    if(this.uniqueColours.indexOf(hash) === -1) {
+                        this.uniqueColours.push(hash);
+                    }
+                }                
+            }, this);
 
-			return {
-				'total-unique-colours': this.uniqueColours.length
-			};
-		};
+            return {
+                'total-unique-colours': this.uniqueColours.length
+            };
+        };
 
-		function getLongHashForm(string) {
-			if(string.length == 3) {
-				var r = string.substring(0, 1),
-					g = string.substring(1, 2),
-					b = string.substring(2);
+        function getLongHashForm(string) {
+            if(string.length == 3) {
+                var r = string.substring(0, 1),
+                    g = string.substring(1, 2),
+                    b = string.substring(2);
 
-				return r + r + g + g + b + b;
-			}
+                return r + r + g + g + b + b;
+            }
 
-			return string;
-		}
+            return string;
+        }
 
-		return TotalUniqueColours;
-	}
+        return TotalUniqueColours;
+    }
 );
 define(
-	'metrics/UniqueColours',
-	[],
+    'metrics/UniqueColours',
+    [],
 
-	function() {
-		function UniqueColours() {
-			this.uniqueColours = [];
-		}
+    function() {
+        function UniqueColours() {
+            this.uniqueColours = [];
+        }
 
-		UniqueColours.prototype.measure = function(selectorData) {
-			selectorData.values.forEach(function(value) {
-				if(value.typeGroup == 'color') {
-					var hash = getLongHashForm(value.value.toLowerCase());
-					if(this.uniqueColours.indexOf(hash) === -1) {
-						this.uniqueColours.push(hash);
-					}
-				}
-			}, this);
-			return {
-				'unique-colours': this.uniqueColours.sort().join(', ')
-			};
-		};
+        UniqueColours.prototype.measure = function(selectorData) {
+            selectorData.values.forEach(function(value) {
+                if(value.typeGroup == 'color') {
+                    var hash = getLongHashForm(value.value.toLowerCase());
+                    if(this.uniqueColours.indexOf(hash) === -1) {
+                        this.uniqueColours.push(hash);
+                    }
+                }
+            }, this);
+            return {
+                'unique-colours': this.uniqueColours.sort().join(', ')
+            };
+        };
 
-		function getLongHashForm(string) {
-			if(string.length == 3) {
-				var r = string.substring(0, 1),
-					g = string.substring(1, 2),
-					b = string.substring(2);
+        function getLongHashForm(string) {
+            if(string.length == 3) {
+                var r = string.substring(0, 1),
+                    g = string.substring(1, 2),
+                    b = string.substring(2);
 
-				return r + r + g + g + b + b;
-			}
+                return r + r + g + g + b + b;
+            }
 
-			return string;
-		}
+            return string;
+        }
 
-		return UniqueColours;
-	}
+        return UniqueColours;
+    }
 );
 define(
-	'metrics/Declaration',
-	[
-		'metrics/TotalUniqueColours', 'metrics/UniqueColours'
-	],
-	function(
-		TotalUniqueColours, UniqueColours
-	) {
-		return [
-			new TotalUniqueColours,
-			new UniqueColours
-		];
-	}
+    'metrics/Declaration',
+    [
+        'metrics/TotalUniqueColours', 'metrics/UniqueColours'
+    ],
+    function(
+        TotalUniqueColours, UniqueColours
+    ) {
+        return [
+            new TotalUniqueColours(),
+            new UniqueColours()
+        ];
+    }
 );
 define(
-	'metrics/TotalStylesheets',
-	[],
+    'metrics/TotalStylesheets',
+    [],
 
-	function() {
-		function TotalStylesheets () {
-			this.totalStylesheets = 0;
-		}
+    function() {
+        function TotalStylesheets () {
+            this.totalStylesheets = 0;
+        }
 
-		TotalStylesheets.prototype.measure = function(stylesheetData) {
-			this.totalStylesheets++;
+        TotalStylesheets.prototype.measure = function(stylesheetData) {
+            this.totalStylesheets++;
 
-			return {
-				'total-stylesheets': this.totalStylesheets
-			};
-		};
+            return {
+                'total-stylesheets': this.totalStylesheets
+            };
+        };
 
-		return TotalStylesheets;
-	}
+        return TotalStylesheets;
+    }
 );
 define(
-	'metrics/Stylesheet',
-	[
-		'metrics/TotalStylesheets',
-	],
-	function(
-		TotalStylesheets
-	) {
-		return [
-			new TotalStylesheets
-		];
-	}
+    'metrics/Stylesheet',
+    [
+        'metrics/TotalStylesheets',
+    ],
+    function(
+        TotalStylesheets
+    ) {
+        return [new TotalStylesheets()];
+    }
 );
 define(
-	'metrics/All',
-	['metrics/Selector', 'metrics/Declaration', 'metrics/Stylesheet'],
+    'metrics/All',
+    ['metrics/Selector', 'metrics/Declaration', 'metrics/Stylesheet'],
 
-	function(selectorMetrics, declarationMetrics, stylesheetMetrics) {
-		return {
-			selector: selectorMetrics,
-			declaration: declarationMetrics,
-			stylesheet: stylesheetMetrics
-		}
-	}
+    function(selectorMetrics, declarationMetrics, stylesheetMetrics) {
+        return {
+            selector: selectorMetrics,
+            declaration: declarationMetrics,
+            stylesheet: stylesheetMetrics
+        };
+    }
 );
 require.config({
-	baseUrl: 'scripts/libs',
-	shim: {
-		underscore: {
-			exports: '_'
-		}
-	},
-	paths: {
-		CssTool: '../CssTool',
-		jquery: "../libs/jquery/jquery-1.9.1.min",
-		tokenizer: "../libs/CssParser/tokenizer",
-		parser: "../libs/CssParser/parser",
-		underscore: '../libs/underscore-min'
-	}
+    baseUrl: 'scripts/libs',
+    shim: {
+        underscore: {
+            exports: '_'
+        }
+    },
+    paths: {
+        CssTool: '../CssTool',
+        jquery: "../libs/jquery/jquery-1.9.1.min",
+        tokenizer: "../libs/CssParser/tokenizer",
+        parser: "../libs/CssParser/parser",
+        underscore: '../libs/underscore-min'
+    }
 });
 
 requirejs(['CssTool','metrics/All', 'ReportWriterConsole'],
-	function (CssTool, metrics, ReportWriterConsole) {
-		var stylesheets = jQuery("link[rel='stylesheet']")
-			stylesheetData = [];
+    function (CssTool, metrics, ReportWriterConsole) {
+        var stylesheets = jQuery("link[rel='stylesheet']"),
+            stylesheetData = [];
 
-		if (typeof stylesheetArray != 'undefined') {
-			var cssTool = new CssTool(metrics);
-			cssTool.runReport(stylesheetArray);
-		} else {
+        if (typeof stylesheetArray != 'undefined') {
+            var cssTool = new CssTool(metrics);
+            cssTool.runReport(stylesheetArray);
+        } else {
 
-			stylesheets.each(function () {
-			    jQuery.get(jQuery(this).attr('href'), function (data) {
-			        stylesheetData.push(data);
-			    });
-			});
+            stylesheets.each(function () {
+                jQuery.get(jQuery(this).attr('href'), function (data) {
+                    stylesheetData.push(data);
+                });
+            });
 
-			setTimeout(function () {
-				var cssTool = new CssTool(metrics, {'reportWriter': new ReportWriterConsole});
-				cssTool.runReport(stylesheetData);
-			}, 5000);
-		}
-	}
+            setTimeout(function () {
+                var cssTool = new CssTool(metrics, {'reportWriter': new ReportWriterConsole()});
+                cssTool.runReport(stylesheetData);
+            }, 5000);
+        }
+    }
 );
 
 /*
 javascript: (function () {   
     var jsCode = document.createElement('script'),
-    	requirePath = 'http://localhost/~kas/CssTool/source/libs/require.js/require.js',
-    	scriptPath = 'http://localhost/~kas/CssTool/build/app.js';
+        requirePath = 'http://localhost/~kas/CssTool/source/libs/require.js/require.js',
+        scriptPath = 'http://localhost/~kas/CssTool/build/app.js';
     jsCode.setAttribute('src', requirePath);
     jsCode.setAttribute('data-main', scriptPath);
   document.body.appendChild(jsCode);   

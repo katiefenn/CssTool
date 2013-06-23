@@ -1,20 +1,20 @@
 define(
-	'metrics/TotalStylesheets',
-	[],
+    'metrics/TotalStylesheets',
+    [],
 
-	function() {
-		function TotalStylesheets () {
-			this.totalStylesheets = 0;
-		}
+    function() {
+        function TotalStylesheets () {
+            this.totalStylesheets = 0;
+        }
 
-		TotalStylesheets.prototype.measure = function(stylesheetData) {
-			this.totalStylesheets++;
+        TotalStylesheets.prototype.measure = function(stylesheetData) {
+            this.totalStylesheets++;
 
-			return {
-				'total-stylesheets': this.totalStylesheets
-			};
-		};
+            return {
+                'total-stylesheets': this.totalStylesheets
+            };
+        };
 
-		return TotalStylesheets;
-	}
+        return TotalStylesheets;
+    }
 );

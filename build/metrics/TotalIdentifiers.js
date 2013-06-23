@@ -1,23 +1,23 @@
 define(
-	'metrics/TotalIdentifiers',
-	[],
+    'metrics/TotalIdentifiers',
+    [],
 
-	function () {
+    function () {
 
-		function TotalIdentifiers () {
-			this.totalIdentifiers = 0;
-		}
+        function TotalIdentifiers () {
+            this.totalIdentifiers = 0;
+        }
 
-		TotalIdentifiers.prototype.measure = function(selectorData) {
-			_.each(selectorData, function(selector){
-				this.totalIdentifiers += selector.length;
-			}, this);
+        TotalIdentifiers.prototype.measure = function(selectorData) {
+            _.each(selectorData, function(selector){
+                this.totalIdentifiers += selector.length;
+            }, this);
 
-			return {
-				'total-identifiers': this.totalIdentifiers
-			}
-		};
+            return {
+                'total-identifiers': this.totalIdentifiers
+            };
+        };
 
-		return TotalIdentifiers;
-	}
+        return TotalIdentifiers;
+    }
 );

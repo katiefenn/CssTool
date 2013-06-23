@@ -1,16 +1,16 @@
 define(
-	'ReportWriterConsole',
-	[],
+    'ReportWriterConsole',
+    [],
 
-	function () {
-		function ReportWriterConsole() {
+    function () {
+        function ReportWriterConsole() {
 
-		}
+        }
 
-		ReportWriterConsole.prototype.writeReport = function(results) {
-			console.log(results);
-		};
+        ReportWriterConsole.prototype.writeReport = function(results) {
+            console.log(results);
+        };
 
-		return ReportWriterConsole;
-	}
+        return ReportWriterConsole;
+    }
 );

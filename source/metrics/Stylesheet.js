@@ -1,13 +1,11 @@
 define(
-	'metrics/Stylesheet',
-	[
-		'metrics/TotalStylesheets',
-	],
-	function(
-		TotalStylesheets
-	) {
-		return [
-			new TotalStylesheets
-		];
-	}
+    'metrics/Stylesheet',
+    [
+        'metrics/TotalStylesheets',
+    ],
+    function(
+        TotalStylesheets
+    ) {
+        return [new TotalStylesheets()];
+    }
 );

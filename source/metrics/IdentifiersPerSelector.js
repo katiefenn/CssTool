@@ -1,25 +1,25 @@
 define(
-	'metrics/IdentifiersPerSelector',
-	[],
+    'metrics/IdentifiersPerSelector',
+    [],
 
-	function() {
-		function IdentifiersPerSelector() {
-			this.totalIdentifiers = 0;
-			this.totalSelectors = 0;
-		}
+    function() {
+        function IdentifiersPerSelector() {
+            this.totalIdentifiers = 0;
+            this.totalSelectors = 0;
+        }
 
-		IdentifiersPerSelector.prototype.measure = function(selectorData) {
-			this.totalSelectors += selectorData.selectors.length;
+        IdentifiersPerSelector.prototype.measure = function(selectorData) {
+            this.totalSelectors += selectorData.selectors.length;
 
-			_.each(selectorData.selectors, function(selector){
-				this.totalIdentifiers += selector.length;
-			}, this);
+            _.each(selectorData.selectors, function(selector){
+                this.totalIdentifiers += selector.length;
+            }, this);
 
-			return {
-				'identifiers-per-selector': this.totalIdentifiers / this.totalSelectors
-			};
-		};
+            return {
+                'identifiers-per-selector': this.totalIdentifiers / this.totalSelectors
+            };
+        };
 
-		return IdentifiersPerSelector;
-	}
+        return IdentifiersPerSelector;
+    }
 );
