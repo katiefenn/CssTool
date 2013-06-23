@@ -1,29 +1,35 @@
 require.config({
-	baseUrl: 'scripts/Libs',
+	baseUrl: 'scripts/libs',
+	shim: {
+		underscore: {
+			exports: '_'
+		}
+	},
 	paths: {
 		CssTool: '../CssTool',
 		jquery: "../libs/jquery/jquery-1.9.1.min",
 		tokenizer: "../libs/CssParser/tokenizer",
-		parser: "../libs/CssParser/parser"
+		parser: "../libs/CssParser/parser",
+		underscore: '../libs/underscore-min'
 	}
 });
 
-requirejs(['CssTool','metrics/All','jquery'],
-	function (CssTool, metrics) {
-//		var stylesheets = jQuery("link[rel='stylesheet']")
-//			stylesheetData = [];
+requirejs(['CssTool','metrics/All', 'ReportWriterChrome'],
+	function (CssTool, metrics, ReportWriterChrome) {
+		var stylesheets = [];
+		chrome.devtools.inspectedWindow.getResources(function(resources){
+			_.each(resources, function(resource){
+                if(resource.url.indexOf('.css') != -1) {
+                	resource.getContent(function(content) {
+                		stylesheets.push(content);
+                	});
+                }
+			});
+		});
 
-		console.log(chrome.devtools.inspectedPage)
-
-		// stylesheets.each(function () {
-		//     jQuery.get(jQuery(this).attr('href'), function (data) {
-		//         stylesheetData.push(data);
-		//     });
-		// });
-
-		// setTimeout(function () {
-		// 	var cssTool = new CssTool(metrics);
-		// 	cssTool.runReport(stylesheetData);
-		// }, 5000);
+		setTimeout(function () {
+			var cssTool = new CssTool(metrics, {'reportWriter': new ReportWriterChrome});
+			cssTool.runReport(stylesheets);
+		}, 5000);
 	}
 );
