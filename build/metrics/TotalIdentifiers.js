@@ -9,8 +9,12 @@ define(
         }
 
         TotalIdentifiers.prototype.measure = function(selectorData) {
-            _.each(selectorData, function(selector){
-                this.totalIdentifiers += selector.length;
+            _.each(selectorData.selectors, function(selector){
+                _.each(selector, function(identifier) {
+                    if(identifier != " ") {
+                        this.totalIdentifiers += 1;
+                    }
+                }, this);
             }, this);
 
             return {

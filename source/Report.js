@@ -1,43 +1,42 @@
 define(
     'Report',
-    ['underscore'],
+    ['underscore', 'backbone'],
 
-    function (_) {
+    function (_, Backbone) {
+        var Report = Backbone.Model.extend({
+            defaults: {
+                results: {}
+            },
 
-        function Report(catalogData, metrics) {
-            this.catalog = catalogData;
-            this.results = {};
-            this.metrics = metrics;
-        }
+            run: function() {
+                _.each(this.get("data"), function(stylesheet) {
+                    this.runMetricsOnStylesheet(stylesheet, this.get("metrics").stylesheet);
 
-        Report.prototype.run = function() {
-            this.catalog.forEach(function(stylesheet) {
-                this.runMetricsOnStylesheet(stylesheet, this.metrics.stylesheet);
-
-                _.each(stylesheet, function(rulePart){
-                    if(rulePart.type == 'selector') {
-                        this.runMetricsOnCatalogItem(rulePart, this.metrics.selector);
-                    }
-                    else if(rulePart.type == 'declaration') {
-                        this.runMetricsOnCatalogItem(rulePart, this.metrics.declaration);
-                    }
+                    _.each(stylesheet, function(rulePart){
+                        if(rulePart.type == 'selector') {
+                            this.runMetricsOnCatalogItem(rulePart, this.get("metrics").selector);
+                        }
+                        else if(rulePart.type == 'declaration') {
+                            this.runMetricsOnCatalogItem(rulePart, this.get("metrics").declaration);
+                        }
+                    }, this);
                 }, this);
-            }, this);
 
-            return this.results;
-        };
+                return this.get("results");
+            },
 
-        Report.prototype.runMetricsOnStylesheet = function(catalogItem, metrics) {
-            _.each(metrics, function(metric){
-                _.extend(this.results, metric.measure(catalogItem));
-            }, this);
-        };
+            runMetricsOnStylesheet: function(stylesheet, metrics) {
+                _.each(metrics, function(metric){
+                    _.extend(this.get("results"), metric.measure(stylesheet));
+                }, this);
+            },
 
-        Report.prototype.runMetricsOnCatalogItem = function(catalogItem, metrics) {
-            _.each(metrics, function(metric){
-                _.extend(this.results, metric.measure(catalogItem));
-            }, this);
-        };
+            runMetricsOnCatalogItem: function(catalogItem, metrics) {
+                _.each(metrics, function(metric){
+                    _.extend(this.get("results"), metric.measure(catalogItem));
+                }, this);                
+            }
+        });
 
         return Report;
     }

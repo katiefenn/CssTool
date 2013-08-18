@@ -12,7 +12,11 @@ define(
             this.totalSelectors += selectorData.selectors.length;
 
             _.each(selectorData.selectors, function(selector){
-                this.totalIdentifiers += selector.length;
+                _.each(selector, function(identifier) {
+                    if(identifier != ' ') {
+                        this.totalIdentifiers += 1;
+                    }
+                }, this);
             }, this);
 
             return {

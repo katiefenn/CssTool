@@ -1,79 +1,81 @@
 define(
     'NodeAdaptorDeclaration',
-    [],
+    ['underscore', 'backbone'],
 
-    function() {
+    function(_, Backbone) {
 
-        function NodeAdaptorDeclaration() {
-            this.data = {};
-            this.node = {
-                'type': 'declaration',
-                'property': '',
-                'values': []
-            };
-        }
+        var NodeAdaptorDeclaration = Backbone.Model.extend({
+            defaults: {
+                data: {}
+            },
 
-        NodeAdaptorDeclaration.prototype.process = function(data) {
-            this.data = data;
+            process: function(data) {
+                this.set("data", data);
+                var node = {
+                    type: 'declaration',
+                    property: '',
+                    values: []
+                };
 
-            this.node.property = this.data.name;
+                _.each(this.get("data").value, function(value) {
+                    processValue(value, node);
+                }, this);
 
-            _.each(this.data.value, function(value){
-                this.processValue(value);
-            }, this);
+                return node;
+            }
+        });
 
-            return this.node;
-        };
-
-        NodeAdaptorDeclaration.prototype.processValue = function(value) {
+        var processValue = function(value, node) {
             if(value.tokenType == 'HASH') {
-                this.node.values.push(this.processHash(value));
+                node.values.push(processHash(value));
             }
             else if(value.tokenType == 'PERCENTAGE') {
-                this.node.values.push(this.processPercentage(value));
+                node.values.push(processPercentage(value));
             }
             else if(value.tokenType == 'DIMENSION') {
-                this.node.values.push(this.processPixel(value));
+                node.values.push(processPixel(value));
             }
             else if(value.tokenType == 'URL') {
-                this.node.values.push(this.processUrl(value));
+                node.values.push(processUrl(value));
             }
             else if(value.tokenType == 'IDENT') {
-                this.node.values.push(this.processKeyword(value));
+                node.values.push(processKeyword(value));
             }
             else if (value.tokenType == 'NUMBER') {
-                this.node.values.push(this.processNumber(value));
+                node.values.push(processNumber(value));
             }
             else if (value.tokenType == 'STRING') {
-                this.node.values.push(this.processString(value));
+                node.values.push(processString(value));
             }
+
+            return node;
         };
 
-        NodeAdaptorDeclaration.prototype.processHash = function(value) {
+        var processHash = function(value) {
             return {'value': value.value, 'string': '#' + value.value, 'typeGroup': 'color', 'type': 'rgb', 'format': 'hexadecimal'};
         };
 
-        NodeAdaptorDeclaration.prototype.processPercentage = function(value) {
+        var processPercentage = function(value) {
             return {'value': value.value, 'string': value.value + '%', 'typeGroup': 'numeric', 'type': 'percentage'};
         };
 
-        NodeAdaptorDeclaration.prototype.processPixel = function(value) {
+        var processPixel = function(value) {
             return {'value': value.num, 'string': value.num + 'px', 'typeGroup': 'length', 'type': 'pixels'};
         };
 
-        NodeAdaptorDeclaration.prototype.processUrl = function(value) {
+        var processUrl = function(value) {
             return {'value': value.value, 'string': 'url(' + value.value + ')', 'typeGroup': 'textual', 'type': 'url'};
         };
 
-        NodeAdaptorDeclaration.prototype.processKeyword = function(value) {
+        var processKeyword = function(value) {
             return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'keyword'};
         };
 
-        NodeAdaptorDeclaration.prototype.processNumber = function(value) {
-            return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'};
+        var processNumber = function(value) {
+            return {'value': value.value, 'string': value.value, 'typeGroup': 'numeric', 'type': 'number'}
         };
 
-        NodeAdaptorDeclaration.prototype.processString = function(value) {
+        var processString = function(value) {
             return {'value': value.value, 'string': value.value, 'typeGroup': 'textual', 'type': 'string'};
         };
 

@@ -1,82 +1,63 @@
 define(
     'NodeAdaptorSelector',
-    [],
-    function () {
+    ['underscore', 'backbone'],
+    function (_, Backbone) {
 
-        function NodeAdaptorSelector() {
-            this.node = {
-                'selectors': [],
-                'type': 'selector'
-            };
-            this.data = {};
-            this.dataIndex = 0;
-            this.identifierIndex = 0;
-            this.selectorIndex = 0;
+        var NodeAdaptorSelector = Backbone.Model.extend({
+            process: function(tokens) {
+                return processTokens(tokens);
+            }
+        });
+
+        var processTokens = function(tokens) {
+            var node = {
+                    'selectors': getSelectors(tokens),
+                    'type': 'selector'
+                };
+
+            return node;
         }
 
-        NodeAdaptorSelector.prototype.process = function(data) {
-            this.data = data;
+        var getSelectors = function(tokens) {
+            var selectors = [],
+                selector = [],
+                identifier = "";
 
-            while (!this.endOfTokens()) {
-                this.processToken(this.getNextToken());
-            }
+            _.each(tokens, function(token, tokenIndex) {
+                if (token.tokenType == 'DELIM' && token.value == '.') {
+                    identifier += ".";
+                } else if (token.tokenType == ':') {
+                    identifier += ":";
+                } else if (token.tokenType == 'HASH') {
+                    identifier += "#" + token.value;
+                } else if (token.tokenType == 'IDENT') {
+                    identifier += token.value;
+                } else if (token.tokenType == 'WHITESPACE') {
+                    selector.push(identifier);
+                    selector.push(' ');
 
-            return this.node;
-        };
+                    identifier = [];
+                }
 
-        NodeAdaptorSelector.prototype.processToken = function(token) {
-            if (token.tokenType == 'DELIM' && token.value == '.') {
-                this.addToCurrentIdentifier('.');
-            } else if (token.tokenType == ':') {
-                this.addToCurrentIdentifier(':');
-            } else if (token.tokenType == 'HASH') {
-                this.addToCurrentIdentifier('#' +  token.value);
-            } else if (token.tokenType == 'IDENT') {
-                this.addToCurrentIdentifier(token.value);
-            } else if (token.tokenType == 'WHITESPACE') {
-                this.identifierIndex++;
-                this.addToCurrentIdentifier(' ');
-                this.identifierIndex++;
-            } else if (token.tokenType == 'DELIM' && token.value == ',') {
-                return;        
-            }
+                if(tokens.length > tokenIndex + 1 && tokenIsDelimiter(tokens[tokenIndex + 1])) {
+                    selector.push(identifier);
+                    selectors.push(selector);
 
-            if (this.nextTokenIsDelimiter()) {
-                this.selectorIndex++;
-            }
-        };
+                    selector = [];
+                    identifier = [];
+                }
+            });
 
-        NodeAdaptorSelector.prototype.addToCurrentIdentifier = function(token) {
-            if (typeof this.node.selectors[this.selectorIndex] == 'undefined') {
-                this.node.selectors[this.selectorIndex] = [];
-                this.identifierIndex = 0;
-            }
-            if (typeof this.node.selectors[this.selectorIndex][this.identifierIndex] == 'undefined') {
-                this.node.selectors[this.selectorIndex][this.identifierIndex] = token;
-            } else {
-                this.node.selectors[this.selectorIndex][this.identifierIndex] += token;
-            }
-        };
+            selector.push(identifier);
+            selectors.push(selector);
 
-        NodeAdaptorSelector.prototype.endOfTokens = function() {
-            return this.dataIndex == this.data.length - 1;
-        };
+            return selectors;
+        }
 
-        NodeAdaptorSelector.prototype.getNextToken = function() {
-            var currentToken = this.data[this.dataIndex];
-            this.dataIndex++;
-            return currentToken;
-        };
-
-        NodeAdaptorSelector.prototype.nextTokenIsWhitespace = function() {
-            return !this.endOfTokens() && this.data[this.dataIndex].tokenType == 'WHITESPACE';
-        };
-
-        NodeAdaptorSelector.prototype.nextTokenIsDelimiter = function() {
-            return !this.endOfTokens() &&
-                this.data[this.dataIndex].tokenType == 'DELIM' &&
-                this.data[this.dataIndex].value == ',';
-        };
+        var tokenIsDelimiter = function(token) {
+            return token.tokenType == 'DELIM' &&
+                token.value == ',';
+        }
 
         return NodeAdaptorSelector;
     }

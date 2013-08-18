@@ -1,26 +1,31 @@
 require.config({
-    baseUrl: 'scripts/libs',
+    baseUrl: 'source',
     shim: {
         underscore: {
             exports: '_'
+        },
+        backbone: {
+            deps: ["underscore", "jquery"],
+            exports: 'Backbone'
         }
     },
     paths: {
-        CssTool: '../CssTool',
-        jquery: "../libs/jquery/jquery-1.9.1.min",
-        tokenizer: "../libs/CssParser/tokenizer",
-        parser: "../libs/CssParser/parser",
-        underscore: '../libs/underscore-min'
+        CssTool: 'CssTool',
+        jquery: "libs/jquery/jquery-1.9.1.min",
+        tokenizer: "libs/CssParser/tokenizer",
+        parser: "libs/CssParser/parser",
+        underscore: 'libs/underscore-min',
+        backbone: 'libs/backbone-min'
     }
 });
 
-requirejs(['CssTool','metrics/All', 'ReportWriterConsole'],
-    function (CssTool, metrics, ReportWriterConsole) {
+requirejs(['CssTool', 'jquery'],
+    function (CssTool, metrics, jQuery) {
         var stylesheets = jQuery("link[rel='stylesheet']"),
             stylesheetData = [];
 
         if (typeof stylesheetArray != 'undefined') {
-            var cssTool = new CssTool(metrics);
+            var cssTool = new CssTool({metrics: metrics});
             cssTool.runReport(stylesheetArray);
         } else {
 
@@ -31,8 +36,8 @@ requirejs(['CssTool','metrics/All', 'ReportWriterConsole'],
             });
 
             setTimeout(function () {
-                var cssTool = new CssTool(metrics, {'reportWriter': new ReportWriterConsole()});
-                cssTool.runReport(stylesheetData);
+                var cssTool = new CssTool();
+                console.log(cssTool.runReport(stylesheetData));
             }, 5000);
         }
     }
@@ -42,9 +47,32 @@ requirejs(['CssTool','metrics/All', 'ReportWriterConsole'],
 javascript: (function () {   
     var jsCode = document.createElement('script'),
         requirePath = 'http://localhost/~kas/CssTool/source/libs/require.js/require.js',
-        scriptPath = 'http://localhost/~kas/CssTool/build/app.js';
+        scriptPath = 'http://localhost/~kas/CssTool/build/CssTool.js';
     jsCode.setAttribute('src', requirePath);
     jsCode.setAttribute('data-main', scriptPath);
   document.body.appendChild(jsCode);   
  }());
+requirejs(['CssTool', 'jquery'],
+    function (CssTool, jQuery) {
+        var stylesheets = jQuery("link[rel='stylesheet']"),
+            stylesheetData = [];
+
+        if (typeof stylesheetArray != 'undefined') {
+            var cssTool = new CssTool({metrics: metrics});
+            cssTool.runReport(stylesheetArray);
+        } else {
+
+            stylesheets.each(function () {
+                jQuery.get(jQuery(this).attr('href'), function (data) {
+                    stylesheetData.push(data);
+                });
+            });
+
+            setTimeout(function () {
+                var cssTool = new CssTool();
+                console.log(cssTool.runReport(stylesheetData));
+            }, 5000);
+        }
+    }
+);
  */

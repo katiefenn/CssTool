@@ -1,51 +1,54 @@
 define(
     'DataAdaptor',
-    ['NodeAdaptorSelector', 'NodeAdaptorDeclaration','tokenizer', 'parser', 'underscore'],
+    ['NodeAdaptorSelector', 'NodeAdaptorDeclaration','tokenizer', 'parser', 'underscore', 'backbone'],
 
-    function (NodeAdaptorSelector, NodeAdaptorDeclaration, tokenizer, parser, _) {
+    function (NodeAdaptorSelector, NodeAdaptorDeclaration, tokenizer, parser, _, backbone) {
 
         function DataAdaptor() {
             this.catalogItems = [];
         }
 
-        DataAdaptor.prototype.process = function(cssString) {
-            var tokens = tokenizer.tokenize(cssString),
-                data = parser.parse(tokens);
+        var DataAdaptor = Backbone.Model.extend({
+            defaults: {
+                data: []
+            },
 
-            _.each(data.value, function(rule){
-                this.processRule(rule);
-            }, this);
+            process: function(cssString) {
+                var cssParsertokens = tokenizer.tokenize(cssString),
+                    cssParserData = parser.parse(cssParsertokens);
 
-            return this.catalogItems;
-        };
+                _.each(cssParserData.value, function(rule){
+                    var data = processRule(rule);
+                    this.set('data', this.get('data').concat(data));
+                }, this);
 
-        DataAdaptor.prototype.processRule = function(data) {
-            if (_.isArray(data.value)) {
-                _.each(data.value, function(property){
-                    this.processDeclaration(property);
+                return this.get('data');
+            }
+        });
+
+        var processRule = function(cssParserData) {
+            var  data = [];
+            if (_.isArray(cssParserData.value)) {
+                _.each(cssParserData.value, function(property){
+                    data.push(processDeclaration(property));
                 }, this);
             }
 
-            if (_.has(data, 'selector')) {
-                this.processSelector(data.selector);
+            if (_.has(cssParserData, 'selector')) {
+                data.push(processSelector(cssParserData.selector));
             }
 
-            var item = {
-                'type': 'rule',
-                'string': data.toString()
-            };
-
-            //this.catalogItems.push(item);
+            return data;
         };
 
-        DataAdaptor.prototype.processDeclaration = function(data) {
+        var processDeclaration = function(data) {
             var declarationAdaptor = new NodeAdaptorDeclaration();
-            this.catalogItems.push(declarationAdaptor.process(data));
+            return declarationAdaptor.process(data);
         };
 
-        DataAdaptor.prototype.processSelector = function(data) {
+        var processSelector = function(data) {
             var selectorAdaptor = new NodeAdaptorSelector();
-            this.catalogItems.push(selectorAdaptor.process(data));
+            return selectorAdaptor.process(data);
         };
 
         return DataAdaptor;

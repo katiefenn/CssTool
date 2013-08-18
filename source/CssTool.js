@@ -1,36 +1,31 @@
 define(
     'CssTool',
-    ['DataAdaptor', 'Report', 'ReportWriterConsole'],
+    ['DataAdaptor', 'underscore', 'backbone', 'metrics/All', 'Report'],
 
-    function(DataAdaptor, Report, ReportWriterConsole) {
-        function CssTool(metrics, options) {
-            var defaults = {
-                'dataAdaptor': new DataAdaptor(),
-                'reportWriter': new ReportWriterConsole(),
-                'runFromSource': 0
-            };
+    function(DataAdaptor, _, Backbone, metrics, Report) {
 
-            if(_.isUndefined(options)) {
-                options = {};
-            }
+        var CssTool = Backbone.Model.extend({
 
-            this.metrics = metrics;
-            this.settings = defaults;
-            _.extend(this.settings, options);
-        }
+            defaults: {
+                dataAdaptor: new DataAdaptor(),
+                metrics: metrics
+            },
 
-        CssTool.prototype.runReport = function (stylesheets) {
-            var catalogData = [];
+            runReport: function(sources) {
+                var data = [];
 
-            if (Object.prototype.toString.call(stylesheets) === '[object Array]') {
-                stylesheets.forEach(function(stylesheet) {
-                    catalogData.push(this.settings.dataAdaptor.process(stylesheet));
+                if (_.isString(sources)) {
+                    sources = [sources];
+                }
+
+                _.each(sources, function(source) {
+                    data.push(this.get("dataAdaptor").process(source));
                 }, this);
-                
-                var report = new Report(catalogData, this.metrics);
-                this.settings.reportWriter.writeReport(report.run());
+
+                var report = new Report({data: data, metrics: this.get("metrics")});
+                return report.run();
             }
-        };
+        });
 
         return CssTool;
     }
