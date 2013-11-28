@@ -22,8 +22,8 @@ define(
                     data.push(this.get("dataAdaptor").process(source));
                 }, this);
 
-                var report = new Report({data: data, metrics: this.get("metrics")});
-                return report.run();
+                var report = new Report({metrics: this.get("metrics")});
+                return report.run(data);
             }
         });
 

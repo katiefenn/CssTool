@@ -5,19 +5,15 @@ define(
     function(_, Backbone) {
 
         var NodeAdaptorDeclaration = Backbone.Model.extend({
-            defaults: {
-                data: {}
-            },
 
             process: function(data) {
-                this.set("data", data);
                 var node = {
                     type: 'declaration',
                     property: '',
                     values: []
                 };
 
-                _.each(this.get("data").value, function(value) {
+                _.each(data, function(value) {
                     processValue(value, node);
                 }, this);
 

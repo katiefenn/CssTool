@@ -13,16 +13,23 @@ define(
                 data: []
             },
 
+            initialize: function() {
+                this.set({
+                    'data': new Array()
+                });
+            },
+
             process: function(cssString) {
                 var cssParsertokens = tokenizer.tokenize(cssString),
-                    cssParserData = parser.parse(cssParsertokens);
+                    cssParserData = parser.parse(cssParsertokens),
+                    data = new Array();
 
                 _.each(cssParserData.value, function(rule){
-                    var data = processRule(rule);
-                    this.set('data', this.get('data').concat(data));
+                    var results = processRule(rule);
+                    data.push(results);
                 }, this);
 
-                return this.get('data');
+                return data;
             }
         });
 

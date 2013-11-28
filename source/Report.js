@@ -8,8 +8,14 @@ define(
                 results: {}
             },
 
-            run: function() {
-                _.each(this.get("data"), function(stylesheet) {
+            initialize: function() {
+                this.set({
+                    'results': {}
+                });
+            },
+
+            run: function(data) {
+                _.each(data, function(stylesheet) {
                     this.runMetricsOnStylesheet(stylesheet, this.get("metrics").stylesheet);
 
                     _.each(stylesheet, function(rulePart){

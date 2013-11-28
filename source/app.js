@@ -46,10 +46,10 @@ requirejs(['CssTool', 'jquery'],
 /*
 javascript: (function () {   
     var jsCode = document.createElement('script'),
-        requirePath = 'http://localhost/~kas/CssTool/source/libs/require.js/require.js',
-        scriptPath = 'http://localhost/~kas/CssTool/build/CssTool.js';
+        requirePath = 'http://localhost/~kas/ChromeExtension/source/libs/CssTool/CssTool.js';
+        //scriptPath = 'http://localhost/~kas/CssTool/build/CssTool.js';
     jsCode.setAttribute('src', requirePath);
-    jsCode.setAttribute('data-main', scriptPath);
+    //jsCode.setAttribute('data-main', scriptPath);
   document.body.appendChild(jsCode);   
  }());
 requirejs(['CssTool', 'jquery'],
