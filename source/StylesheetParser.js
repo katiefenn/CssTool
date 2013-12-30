@@ -1,8 +1,8 @@
 define(
-	'NewParser',
-	['backbone'],
-	function(Backbone) {
-		var NewParser = Backbone.Model.extend({
+	'StylesheetParser',
+	['backbone', 'RuleParser'],
+	function(Backbone, RuleParser) {
+		var StylesheetParser = Backbone.Model.extend({
 			parse: function(stylesheet) {
 				if(stylesheet && stylesheet.length) {
 					return parseStylesheet(stripFormatting(stylesheet));
@@ -13,14 +13,26 @@ define(
 		});
 
 		var parseStylesheet = function(stylesheet) {
+			var ruleParser = new RuleParser(),
+				children = [];
+
+			_.each(getRules(stylesheet), function(rule) {
+				children.push(ruleParser.parse(rule));
+			});
+
+			console.log({
+				children: children,
+				type: 'stylesheet'
+			});
+
 			return {
-				children: parseDeclarations(stylesheet),
+				children: children,
 				type: 'stylesheet'
 			};
 		}
 
-		var parseDeclarations = function(string) {
-			var pattern = /[\w]*[\s]\{[\w\s:\n;-]*}/g;
+		var getRules = function(string) {
+			var pattern = /[\w]*[\s]\{[\w\s\:\n;\-#\.]*}/g;
 			return string.match(pattern);
 		}
 
@@ -36,6 +48,6 @@ define(
 			return string.replace(/\n/g, '');
 		}
 
-		return NewParser;
+		return StylesheetParser;
 	}
 );

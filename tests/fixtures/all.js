@@ -1,9 +1,15 @@
 define(
 	'fixtures/all',
-	['fixtures/simpleDeclarations'],
-	function(simpleDeclarations) {
+	[
+		'fixtures/simpleDeclarations', 'fixtures/multipleDeclarations', 'fixtures/simpleDeclaration',
+		'fixtures/complexDeclaration'
+	],
+	function(simpleDeclarations, multipleDeclarations, simpleDeclaration, complexDeclaration) {
 		return {
-			simpleDeclarations: simpleDeclarations
+			simpleDeclarations: simpleDeclarations,
+			multipleDeclarations: multipleDeclarations,
+			simpleDeclaration: simpleDeclaration,
+			complexDeclaration: complexDeclaration
 		};
 	}
 );
