@@ -33,7 +33,7 @@ require.config({
     }
 });
 
-requirejs(['jquery', 'jasmine-html', 'StylesheetParser', 'RuleParser'],
+requirejs(['jquery', 'jasmine-html'],
     function ($, jasmine, ResourceReader) {
         var jasmineEnv = jasmine.getEnv();
         jasmineEnv.updateInterval = 1000;
@@ -48,7 +48,7 @@ requirejs(['jquery', 'jasmine-html', 'StylesheetParser', 'RuleParser'],
 
         var specs = [];
 
-        specs.push('specs/StylesheetParser', 'specs/RuleParser');
+        specs.push('specs/StylesheetParser', 'specs/RuleParser', 'specs/SelectorParser');
 
         $(function(){
             require(specs, function(){

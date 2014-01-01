@@ -20,11 +20,6 @@ define(
 				children.push(ruleParser.parse(rule));
 			});
 
-			console.log({
-				children: children,
-				type: 'stylesheet'
-			});
-
 			return {
 				children: children,
 				type: 'stylesheet'

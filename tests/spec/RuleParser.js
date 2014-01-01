@@ -26,6 +26,10 @@ define(
 				delete ruleParser;
 			});
 
+			it('returns information on the type of node parsed', function() {
+				expect(ruleParser.parse(fixtures.simpleDeclaration).type).toBe('rule');
+			});
+
 			it('returns collections of selectors and declarations for a rule', function() {
 				expect(ruleParser.parse(fixtures.simpleDeclaration)).toHaveProperty('selectors');
 				expect(ruleParser.parse(fixtures.simpleDeclaration)).toHaveProperty('declarations');

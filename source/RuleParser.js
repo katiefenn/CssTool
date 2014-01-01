@@ -13,7 +13,8 @@ define(
 
 			return {
 				selectors: getSelectors(getSelectorBlock(rule)),
-				declarations: getDeclarations((getDeclarationBlock(rule)))
+				declarations: getDeclarations((getDeclarationBlock(rule))),
+				type: 'rule'
 			}
 		}
 

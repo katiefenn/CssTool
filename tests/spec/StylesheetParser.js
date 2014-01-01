@@ -32,6 +32,10 @@ define(
 				expect(stylesheetParser.parse(fixtures.simpleDeclarations)).not.toBeEmpty();
 			});
 
+			it('returns information on the type of node parsed', function() {
+				expect(stylesheetParser.parse(fixtures.simpleDeclarations).type).toBe('stylesheet');
+			});
+
 			it('returns (n) items of child delcarations for a stylesheet of (n) declarations', function() {
 				expect(stylesheetParser.parse(fixtures.simpleDeclarations)).toHaveProperty('children');
 				expect(stylesheetParser.parse(fixtures.simpleDeclarations).children.length).toBe(2);
