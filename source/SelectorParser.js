@@ -17,10 +17,10 @@ define(
 
 		var getIdentifiers = function(selector) {
 			var identifiers = [],
-				segments = selector.split(/[ \+>~]/g);
+				segments = selector.split(/[ \+>]|~^=/g);
 
 			_.each(segments, function(segment) {
-				identifiers = identifiers.concat(segment.match(/[#\.:]?[\w-]+\]?|\[[\w=]+\]|:{2}[\w-]+/g));
+				identifiers = identifiers.concat(segment.match(/[#\.:]?[\w\-\*]+|\[[\w=\-~'"\|]+\]|:{2}[\w-]+/g));
 			});
 
 			return identifiers;
